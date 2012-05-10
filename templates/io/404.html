@@ -1,0 +1,168 @@
+{% import "forms.html" as forms %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{{ Core.title }}</title>
+<base href="{{ Core.URL }}" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<link rel="stylesheet" href="templates/main.css" type="text/css"/>
+<script LANGUAGE="JavaScript" SRC="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+<script LANGUAGE="JavaScript" SRC="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+<script LANGUAGE="JavaScript" SRC="templates/js/function.js"></script>
+
+{% autoescape false %}
+    {{ Core.css }}
+{% endautoescape %}
+
+{% autoescape false %}
+    {% if Core.js %}
+        {{ Core.js }}
+    {% endif %}
+{% endautoescape %}
+
+<script>
+function countredirect() {
+    window.location="{{ Core.URL }}";
+};
+
+setTimeout("countredirect()", 2000)
+</script>
+
+</head>
+<body>
+
+<table style="background:url('templates/img/bg.jpg')" class="logoTop" cellpadding="0" cellspacing="0"><tr>
+    <td><a href="/"><img src="templates/img/logo.jpg" width="219px" height="92px" border="0" alt="Офисная и медицинская мебель" title="Офисная и медицинская мебель"></a></td>
+    <td style="width:300px" class="logoDiv">
+        <table cellpadding="0" cellspacing="0">
+        <tr>
+            <td><img src="images/telephone_blue.png"></td>
+            <td><i>&nbsp;&nbsp;&nbsp;+7 <span style="font-size:200%">(495) 660-94-96</span></i></td>
+        </tr><tr>
+            <td><img src="images/email_forward.png"></td>
+            <td><i>&nbsp;&nbsp;&nbsp;<a href="mailto:zakaz@artdecormebel.net">zakaz@artdecormebel.net</a></i></td>
+        </tr>
+        </table>
+
+        <!--
+        <i>Тел. 8 (495) 660-94-96 Многоканальный<br />
+        Факс: 8 (495) 660-94-96 доб. 4<br />
+        E-mail: <a href="mailto:zakaz@artdecormebel.net">zakaz@artdecormebel.net</a></i>
+        -->
+    </td>
+    <!--<td style="width:500px" class="logoDiv">
+        Представительство ООО "Арт Декор Мебель" в Санкт-Петербурге<br />
+        8 (921) 784-55-04<br />
+        E-mail: <a href="mailto:spb@artdecormebel.net">spb@artdecormebel.net</a>
+    </td>-->
+</tr></table>
+
+<!-- Menu -->
+<table class="menuTop" cellpadding="0" cellspacing="0">
+    <tr>
+    {% for id in Core.menu.topMenu %}
+        <td{% if Core.getObj==id.translit_url %} class="selected"{% else %} class="menu"{% endif %} style="position:relative;text-align:center"><a href="{{ forms.linkPath('Page', id.translit_url, '', '') }}">{{ id.menu_title }}</a></td>
+    {% endfor %}
+
+    <td><span style="float:right;font-size:10pt;padding-top:2px"><i>Режим работы: ПН-ПТ: с 10:00-18:00</i></span></td>
+    </tr>
+</table>
+
+<div style="border:solid #fff 1px;margin:0px 50px;">
+<table cellpadding="0" cellspacing="0" style="width:100%"><tr valign="top">
+    <td style="background:#e7eaec;padding:10px;width:250px">
+        <!-- Поиск -->
+        <form action="good/search/" method="get" class="search" style="text-align:center">
+            <input name="search" value="{% if _GET.search %}{{ _GET.search }}{% else %}поиск...{% endif %}"  onblur="if(this.value=='') this.value='поиск...';" onfocus="if(this.value=='поиск...') this.value='';" />
+            <input type="submit" value="Найти" class="button"/>
+        </form>
+        <!-- /Поиск -->
+
+        <!-- Меню товаров -->
+        <div class="goodsMenu">
+        {% for id in Core.menu.goodsMenu.1|keys %}
+            <div class="level1"><A href="good/{{ Core.menu.goodsMenu.1[id].category_url }}/">{{ Core.menu.goodsMenu.1[id].category_menu }}</a></div>
+            {% for idL2 in Core.menu.goodsMenu[id]|keys %}
+                <div class="level2"><A href="good/{{ Core.menu.goodsMenu[id][idL2].category_url }}/"><img src="/templates/img/goods_menu_aim.jpg" border="0">
+                    {{ Core.menu.goodsMenu[id][idL2].category_menu }}</a></div>
+            {% endfor %}
+        {% endfor %}
+        </div>
+        <!-- /Меню товаров -->
+
+        <!-- Корзина -->
+        <div class="cart">
+        <div class="menuLeftH1" style="text-align:center"><a href="cart/">Корзина</a></div>
+        <table align="center"><tr><td><a href="cart/">Товаров: </a></td><td><a id="cartNum" href="cart/">{{ _SESSION.cartNum }}</a></td></tr>
+                            <tr><td><a href="cart/">На сумму: </a></td><td><a id="cartTotal" href="cart/">{{ _SESSION.cartTotal }} руб.</a></td></tr></table>
+        </div>
+        <!-- /Корзина -->
+
+        <!-- Левое меню -->
+        <div class="menuLeftH1" style="text-align:center">Услуги</div>
+        {% for id in Core.menu.leftMenu %}
+            <div class="{% if Core.getObj==id.translit_url %}leftMenuSelected{% else %}leftMenu{% endif %}"><a href="{{ forms.linkPath('page', id.translit_url, '', '') }}">{{ id.menu_title }}</a></div>
+        {% endfor %}
+
+        <div class="{% if Core.action=='Article' %}leftMenuSelected{% else %}leftMenu{% endif %}"><a href="article/">Статьи</a></div>
+
+        <!-- /Левое меню -->
+
+        <div style="text-align:center;margin:30px 0px">
+            <!--LiveInternet counter--><script type="text/javascript"><!--
+            document.write("<a href='http://www.liveinternet.ru/click' "+
+            "target=_blank><img src='//counter.yadro.ru/hit?t28.6;r"+
+            escape(document.referrer)+((typeof(screen)=="undefined")?"":
+            ";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+            screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+            ";"+Math.random()+
+            "' alt='' title='LiveInternet: показано количество просмотров и"+
+            " посетителей' "+
+            "border='0' width='88' height='120'><\/a>")
+            //--></script><!--/LiveInternet-->
+        </div>
+
+    </td>
+    <td class="content">
+
+        <h1>404</h1>
+
+        <p>К сожалению эта страница не существовала или была удалена. Через две секунды вы будете перенаправлены на заглавную страницу.
+    </td>
+</tr></table>
+</div>
+
+<div class="bottom">
+    <img src="templates/img/bottom_logo.jpg" border="0" alt="artdecormebel - Офисная и медицинская мебель" style="float:right" title="artdecormebel - Офисная и медицинская мебель">
+
+    <table cellpadding="0" cellspacing="0"><tr>
+    <td>
+        Все права защищены © {{ Core.date|date("Y") }} <a href="{{ Core.baseURL }}">artdecormebel.net</a><br />
+        Перепечатка информации возможна только при наличии<br />
+        согласия администратора и активной ссылки на источник
+    </td><td>
+
+    </td>
+    </tr></table>
+</div>
+
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter4823524 = new Ya.Metrika(4823524);
+             yaCounter4823524.clickmap(true);
+             yaCounter4823524.trackLinks(true);
+
+        } catch(e) { }
+    });
+})(window, 'yandex_metrika_callbacks');
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><img src="//mc.yandex.ru/watch/4823524" style="position:absolute; left:-9999px;" alt="" /></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>

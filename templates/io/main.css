@@ -1,0 +1,85 @@
+* {font-family:arial,helvetica,sans-serif;font-size: 12px;color:#212121;}
+body,html {margin: 0 auto;}
+
+h5 {font-size: 30px;}
+h2 {font-size: 24px;}
+h3 {font-size: 14px; margin-top:0px;padding-top: 0px}
+h4 {font-size: 16px;margin: 0;padding: 0;}
+
+table tr,th,td {border-color: #ccc;}
+table a {border-color: #c00;}
+
+img {border: 0px}
+
+p {margin: 0px;padding: 0px;}
+span {margin: 0px;padding: 0px;}
+
+a {font-size: 13px;color: #2a2a2a;}
+a:hover {text-decoration: underline;}
+
+.phone1{float: left;font-size: 24px;color: #c6c6c6;padding:16px 0 0 38px;}
+.phone2{float: left;font-size: 36px;color: #e51b24;padding:2px 0 0 14px;}
+
+#Container {width: 934px;margin: 0 auto;border-top: 1px solid #181818;}
+
+#Header {}
+#TopMenu {height: 100px;}
+#TopMenuLogo {width: 240px;height: 100px;float: left;}
+#Logo {float: left;width: 230px;height: 60px;margin: 19px 0px 0px 0px;}
+#TopMenuRight {float: left;width: 694px;}
+#TopMenuRightTop {height: 50px;}
+#TopMenuRightTopBox {float: right;}
+#TopMenuRightTopLogin {float: left;width: 150px;height: 48px;padding-top: 12px;color:#999;}
+#TopMenuRightTopLogin a {font-size: 12px;color:#999;}
+
+#TopMenuRightTopSearch {float: left;width: 190px;height: 46px;padding-top: 10px;color: #999;}
+#btn {float: left;width: 46px;height: 20px;margin-left: 2px;outline:none;color: #999;border: 1px solid #a8a8a8;background: #f9f9f9;}
+#number {float: left;width: 138px;height: 16px;padding: 2px 0px 0px 2px;border: 1px solid #a8a8a8;background: #f9f9f9;}
+
+#TopMenuRightBot {height: 50px;}
+#TopMenuRightBotMenu {padding: 10px 0px 0px 40px;}
+#TopMenuRightBotMenu a {font-size: 18px; padding: 0px 10px}
+
+#BigLogo {height: 353px;background: url('/templates/obeton/img/beton3.jpg') center no-repeat;}
+
+#Content {height: 250px;margin: 20px 0px;}
+#ContentCont {display: table;margin-top: 30px;}
+#ContentContLeft {display: table-cell;float: left;width: 220px;margin-right: 20px;}
+#ContentContRight {display: table-cell;vertical-align: top;float: none;width: 694px;height: 100%;}
+
+.ContentBlock {float: left;width: 300px;height: 250px;margin-right: 11px;}
+.ContentBlock2 {width: 220px;}
+.ContentBlockHead {height: 30px;border-bottom: 1px solid #ccc;}
+.ContentBlockHeadLeft {float: left;font-size: 22px;color: #c00}
+.ContentBlockHeadRight {float: right;padding: 12px 6px 0px 0px;font-size: 9px;color: #aaaba6}
+.ContentBlockMenu {font-size: 12px;color: #333;}
+.ContentBlockMenu ul {margin-left: 0px;padding-left: 0px;list-style: none;}
+.ContentBlockMenu li {padding-top: 7px;}
+.ContentBlockMenu li a {padding-left: 12px;text-decoration: none;background: url('/templates/obeton/img/cont1.png') left 4px no-repeat;}
+
+#FooterTop {height: 130px;border-top: 2px solid #616161;}
+.FooterTopBox {float: left;width: 467px;height: 130px;}
+.FooterTopBoxText {float:left;margin: 20px 0px 0px 14px}
+.FooterTopBoxText p {color: #6a6a6a;margin-top: 7px;}
+#img1 {float: left;display:table;margin-top: 15px;}
+#img2 {float: left;display:table;margin-top: 18px;}
+
+.pages {}
+.pages img {margin: 5px;}
+
+#Footer {height: 80px;margin-bottom: 20px;border-top: 1px solid #bcbcbc;}
+#FooterLogo {float: left;width: 137px;height: 48px;margin-top: 30px;display: block;background: url('/templates/obeton/img/logo_bot.jpg');}
+#FooterMid {float: left;height: 130px;margin-left: 20px;}
+#FooterMidTop {height: 20px;margin-top: 20px;}
+#FooterMidTop a {color: #6a6a6a;}
+#FooterMidBot {height: 20px;}
+#FooterMidBot p {padding-top: 4px;color: #3f3f3f;}
+#FooterMidBot span {color: #e51b24;}
+#FooterRight {float: right;width: 88px;height: 32px;margin-top: 20px;border: 1px dotted #bcbcbc;}
+
+.clear {clear: both;}
+
+.debuging {clear:both}
+
+.newsBlocksLinks {}
+.newsBlockLinks {width: 32%; float:left; display: block}

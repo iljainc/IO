@@ -1,0 +1,29 @@
+global $base;
+
+$echo='';
+
+$echo.='
+<form method="post"';
+if(!empty($this->pg_id))$echo.=' action="'.$base.'core/propertys_group/'.$this->pg_id.'/"';
+$echo.='>
+<fieldset>
+        <legend><strong>';
+if (empty($this->pg_id))$echo.='Создание группы свойтсв';
+else $echo.='Редактирование группы свойств';
+$echo.='</strong></legend>
+
+        <label>Название: <br />
+        <input type="text" name="new_pg_name" value="'.$this->pg_name.'">
+        </label></p>
+
+        <label>Приоритет: <br />
+        <input type="text" style="width:40px" name="new_pg_priority" value="'.$this->pg_priority.'">
+        </label></p>
+
+<p class="submit" style="clear:both"><input type="submit" value="';
+if (empty($this->pg_id))$echo.='Добавить';
+else $echo.='Сохранить';
+$echo.=' &raquo;" name="submit" /></p></fieldset>
+</form>';
+
+return $echo;

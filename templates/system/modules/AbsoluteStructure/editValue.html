@@ -1,0 +1,226 @@
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //HTML
+    //------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    function HTML_edit($Object, $p_id){
+        $echo='';
+
+        //Это все для вывода ап строк
+        if (!empty($Object->values_arr[$p_id])){
+            reset($Object->values_arr[$p_id]);
+            while($e=each($Object->values_arr[$p_id])){
+                $v_id=$e['key'];
+
+                $echo.=''.$Object->p_arr[$p_id]['p_name'].': <br />';
+
+                if ($Object->p_arr[$p_id]['p_type']==9)                         $echo.=$this->HTML_row_link($Object, $p_id, $v_id);
+                else if ($Object->p_arr[$p_id]['p_type']==6)			$echo.=$this->HTML_row_radio($Object, $p_id, $v_id);
+                else if ($Object->p_arr[$p_id]['p_type']==3 OR
+                    $Object->p_arr[$p_id]['p_type']==2)                         $echo.=$this->HTML_row_text($Object, $p_id, $v_id);
+                else if ($Object->p_arr[$p_id]['p_type']==10)			$echo.=$this->HTML_row_date($Object, $p_id, $v_id);
+                else if (!empty($Object->p_arr[$p_id]['p_engine_values']))	$echo.=$this->HTML_row_select($Object, $p_id, $v_id);
+                else								$echo.=$this->HTML_row_input($Object, $p_id, $v_id);
+
+                $echo.='</p>';
+            };
+        };
+
+        if (!empty($Object->values_arr[$p_id]))$c=count($Object->values_arr[$p_id]);
+        else $c=0;
+        //Условие добавление новой записи
+        if ($c<$Object->p_arr[$p_id]['lp_arr'] OR $Object->p_arr[$p_id]['lp_arr']==0){
+                $v_id=0;
+
+                $echo.=''.$Object->p_arr[$p_id]['p_name'].': <br />';
+
+                if ($Object->p_arr[$p_id]['p_type']==9)				$echo.=$this->HTML_row_link($Object, $p_id, $v_id);
+                else if ($Object->p_arr[$p_id]['p_type']==6)			$echo.=$this->HTML_row_radio($Object, $p_id, $v_id);
+                else if ($Object->p_arr[$p_id]['p_type']==3 OR
+                    $Object->p_arr[$p_id]['p_type']==2)                         $echo.=$this->HTML_row_text($Object, $p_id, $v_id);
+                 else if ($Object->p_arr[$p_id]['p_type']==10)			$echo.=$this->HTML_row_date($Object, $p_id, $v_id);
+                else if (!empty($Object->p_arr[$p_id]['p_engine_values']))	$echo.=$this->HTML_row_select($Object, $p_id, $v_id);
+                else								$echo.=$this->HTML_row_input($Object, $p_id, $v_id);
+
+                $echo.='</p>';
+        };
+
+        return $echo;
+    }
+
+    function HTML_row_link($Object, $p_id, $v_id){
+        global $_POST;
+
+        global $g_propertys_db;
+
+        $echo='';
+
+        if (!empty($Object->values_arr[$p_id][$v_id]['lov_value']))$value=$Object->values_arr[$p_id][$v_id]['lov_value'];
+        else $value=0;
+
+        //Тест вариант - приоритетным являеться назначение значений на основании пост данных, чтоб при ошибке не вводить данные заново
+        if (isset($_POST[$Object->get_name($p_id, $v_id)]))$value=$_POST[$Object->get_name($p_id, $v_id)];
+
+        $db_name=$g_propertys_db[$Object->p_arr[$p_id]['p_type']]["db_name"];
+
+        $echo.='<select name="'.$Object->get_name($p_id, $v_id).'"><option>';
+
+        $res=get_sql_result('SELECT o_id, o_name FROM objects
+            WHERE o_inherit=\''.$Object->p_arr[$p_id]['p_engine_values'].'\'',
+            '$Value->HTML_row_link($Object, $p_id, $v_id) Загрузка обьектов ссылок');
+
+        $num=mysql_num_rows($res);
+        for($i=0;$i<$num;$i++){
+            $row=mysql_fetch_array($res);
+
+            $echo.='<option value="'.$row['o_id'].'"';
+            if ($value==$row['o_id'])$echo.=' selected';
+            $echo.='>'.stripslashes($row['o_name']);
+        };
+
+        $echo.='</select>';
+
+        return $echo;
+    }
+
+    function HTML_row_radio($Object, $p_id, $v_id){
+        global $_POST;
+        $echo='';
+
+        if (!empty($Object->values_arr[$p_id][$v_id]['lov_value']))$value=$Object->values_arr[$p_id][$v_id]['lov_value'];
+        else $value=0;
+
+        //Тест вариант - приоритетным являеться назначение значений на основании пост данных, чтоб при ошибке не вводить данные заново
+        if (isset($_POST[$Object->get_name($p_id, $v_id)]))$value=$_POST[$Object->get_name($p_id, $v_id)];
+
+        $echo.='<input type="radio" name="'.$Object->get_name($p_id, $v_id).'" value="0"';
+        if ($value==0)$echo.=' checked';
+        $echo.='>не знаю
+
+                <input type="radio"  name="'.$Object->get_name($p_id, $v_id).'" value="1"';
+        if ($value==1)$echo.=' checked';
+        $echo.='>да
+
+                <input type="radio"  name="'.$Object->get_name($p_id, $v_id).'" value="2"';
+        if ($value==2)$echo.=' checked';
+        $echo.='>нет';
+
+        return $echo;
+    }
+
+    function HTML_row_text($Object, $p_id, $v_id){
+        global $_POST;
+        global $Object;
+
+        $echo='';
+
+        if (!empty($Object->values_arr[$p_id][$v_id]['lov_value']))$value=$Object->values_arr[$p_id][$v_id]['lov_value'];
+        else $value='';
+
+        //Тест вариант - приоритетным являеться назначение значений на основании пост данных, чтоб при ошибке не вводить данные заново
+        if (isset($_POST[$Object->get_name($p_id, $v_id)]))$value=$_POST[$Object->get_name($p_id, $v_id)];
+
+        if (!empty($Object->p_arr[$p_id]['p_engine_values']))$rows=$Object->p_arr[$p_id]['p_engine_values'];
+        else if ($Object->p_arr[$p_id]['p_type']==2)$rows=3;
+        else $rows=20;
+
+        $echo.='<textarea rows="'.$rows.'" style="width:100%"
+            name="'.$Object->get_name($p_id, $v_id).'">'.$value.'</textarea>';
+
+        return $echo;
+    }
+
+    function HTML_row_select($Object, $p_id, $v_id){
+        global $_POST;
+        $echo='';
+
+        if (!empty($Object->values_arr[$p_id][$v_id]['lov_value']))$value=$Object->values_arr[$p_id][$v_id]['lov_value'];
+        else $value='';
+
+        //Тест вариант - приоритетным являеться назначение значений на основании пост данных, чтоб при ошибке не вводить данные заново
+        if (isset($_POST[$Object->get_name($p_id, $v_id)]))$value=$_POST[$Object->get_name($p_id, $v_id)];
+
+        $p_engine_values=$Object->p_arr[$p_id]['p_engine_values'];
+        $p_engine_values=explode('
+', $p_engine_values);
+        $c=count($p_engine_values);
+
+        $echo.='<select name="'.$Object->get_name($p_id, $v_id).'">
+                <option value="">';
+        for($i=0;$i<$c;$i++){
+                $echo.='<option value="'.$p_engine_values[$i].'"';
+                if ($p_engine_values[$i]==$value)$echo.=' selected';
+                $echo.='>'.$p_engine_values[$i];
+        };
+        $echo.='</select>';
+
+        return $echo;
+    }
+
+    function HTML_row_date($Object, $p_id, $v_id){
+        $echo='';
+
+        if (!empty($Object->values_arr[$p_id][$v_id]['lov_value']))
+            $value=$Object->values_arr[$p_id][$v_id]['lov_value'];
+        else $value=0;
+
+        $echo.='<select name="'.$Object->get_name($p_id, $v_id).'_H">';
+        for($i=1;$i<=24;$i++){
+            $echo.='<option value="'.$i.'"';
+            if ($i==date('H', $value))$echo.=' selected';
+            $echo.='>'.$i;
+        };
+        $echo.='</select>:';
+
+        $echo.='<select name="'.$Object->get_name($p_id, $v_id).'_i">
+            <option value="0">0';
+        for($i=1;$i<=60;$i++){
+            $echo.='<option value="'.$i.'"';
+            if ($i==date('i', $value))$echo.=' selected';
+            $echo.='>'.$i;
+        };
+        $echo.='</select> ';
+
+        $echo.='<select name="'.$Object->get_name($p_id, $v_id).'_d">';
+        for($i=1;$i<31;$i++){
+            $echo.='<option value="'.$i.'"';
+            if ($i==date('d', $value))$echo.=' selected';
+            $echo.='>'.$i;
+        };
+        $echo.='</select>-';
+
+        $echo.='<select name="'.$Object->get_name($p_id, $v_id).'_m">';
+        for($i=1;$i<=12;$i++){
+            $echo.='<option value="'.$i.'"';
+            if ($i==date('m', $value))$echo.=' selected';
+            $echo.='>'.$i;
+        };
+        $echo.='</select>-';
+
+        $echo.='<select name="'.$Object->get_name($p_id, $v_id).'_Y">';
+        for($i=2008;$i<=(date('Y')+1);$i++){
+            $echo.='<option value="'.$i.'"';
+            if ($i==date('Y', $value))$echo.=' selected';
+            $echo.='>'.$i;
+        };
+        $echo.='</select>';
+
+        return $echo;
+    }
+
+    function HTML_row_input($Object, $p_id, $v_id){
+        global $_POST;
+        $echo='';
+
+        if (!empty($Object->values_arr[$p_id][$v_id]['lov_value']))$value=$Object->values_arr[$p_id][$v_id]['lov_value'];
+        else $value='';
+
+        $value=str_replace('"', '&quot;', $value);
+
+        //Тест вариант - приоритетным являеться назначение значений на основании пост данных, чтоб при ошибке не вводить данные заново
+        //if (isset($_POST[$Object->get_name($p_id, $v_id)]))$value=$_POST[$Object->get_name($p_id, $v_id)];
+
+        $echo.='<input type="text"';
+        if ($Object->p_arr[$p_id]['p_type']==2)$echo.=' style="width:100%"';
+        $echo.=' name="'.$Object->get_name($p_id, $v_id).'" value="'.$value.'">';
+
+        return $echo;
+    }

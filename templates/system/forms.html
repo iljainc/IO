@@ -1,0 +1,189 @@
+{% macro pages(Core) %}
+    {% if Core.pages>1 %}
+        <pages>
+            Страницы:
+            {% for i in 1..Core.pages %}
+                <page{% if Core.page == i %} class="selected"{% endif %}><a href="{{ Core.getAction }}/{% if Core.getObj %}{{ Core.getObj }}/{% endif %}?page={{ i }}">{{ i }}</a></page>
+            {% endfor %}
+        </pages>
+    {% endif %}
+{% endmacro %}
+
+{% macro standartForm(formData, submitValue) %}
+    <input type="hidden" name="doSave" value="true">
+    <table cellpadding="0" cellspacing="0" class="table">
+    {% for id in formData %}
+        {% if id.name and id.fieldName%}
+            <tr>
+                <th>{{ id.name }}: </th>
+                <td>
+                    {% if id.type == 'text' %}<input type="text" value="{{ id.value }}" name="{{ id.fieldName }}">{% endif %}
+                    {% if id.type == 'int' %}<input style="width:{{ id.typeSpec }}em;text-align:center" type="text" value="{{ id.value }}" name="{{ id.fieldName }}">{% endif %}
+                    {% if id.type == 'img' %}
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                {% if id.src %}<td style="padding:2px 10px"><img src="{{ id.src }}"></td>{% endif %}
+                                <td><input type="File" name="{{ id.fieldName }}"></td>
+                            </tr>
+                        </table>
+                    {% endif %}
+                    {% if id.type == 'select' %}
+                        <select name="{{ id.fieldName }}">
+                            {% for idTS in id.typeSpec|keys %}
+                                <option value="{{ idTS }}"{% if idTS == id.value %} selected{% endif %}>{{ id.typeSpec[idTS] }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+    <tr>
+    <tr>
+        <th></th>
+        <td><input type="submit" value="{{ submitValue }}"></td>
+    </tr>
+    </tr>
+    </table>
+{% endmacro %}
+
+{% macro standartObjectFormValueRow(Core, pRow, pId, vRow, vId) %}
+    {% autoescape false %}
+    
+    {% set pType = pRow.p_type %}
+    {% set fieldName = "edit_" ~ pId ~ "_" ~ vId %}
+    
+    {% if pType == 1 %}{# текстовый 255 #}
+        {# Одно значение сво-ва #}
+        {% if pRow.lp_arr == 1 %}
+            {% if pRow.p_engine_values.select %}
+                <select name="{{ fieldName }}">
+                    <option value=""></option>
+                    {% for option in pRow.p_engine_values.select %}
+                        <option value="{{ option }}" {% if vRow.lov_value == option %} selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <input value="{{ vRow.lov_value }}" name="{{ fieldName }}" type="text" {% if pRow.p_engine_values.width %} style="width:{{ pRow.p_engine_values.width }}px"{% endif %}>
+            {% endif %}
+        {# Неограничееное кол-во значений сво-в - checkbox #}
+        {% else %}
+            {% if pRow.p_engine_values.select %}
+                {% for checkboxId in pRow.p_engine_values.select|keys %}
+                    {% if 'htmlCode' not in checkboxId %}
+                        <span style="display:block;width:20%;float:left">
+                            <input type="checkbox" name="edit_{{ pId }}_{{ loop.index0 }}" value="{{ checkboxId }}"
+                            {% for vId in pRow.value|keys %}
+                                {% if pRow.value[vId].lov_value == checkboxId %}checked{% endif %}
+                            {% endfor %}>
+                            {{ pRow.p_engine_values.select[checkboxId] }}
+                        </span>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    {% elseif pType == 3 %}{# int #}
+        <input value="{{ vRow.lov_value }}" name="{{ fieldName }}" style="width:10em" type="text">
+    {% elseif pType == 2 %}{# текстовый #}
+        {% if pRow.p_engine_values.multiValued %}
+            <tr>
+                <td><input class="valueOrder" value="{{ vRow.lov_order }}" name="newValueOrder_{{ pId }}_{{ vId }}"></td>
+                {% for key in pRow.p_engine_values.multiValued|keys %}
+                    {% set multiName = pRow.p_engine_values.multiValued[key].name %}
+                    <td><input name="{{ fieldName }}__{{ key }}" value="{{ vRow.lov_value[multiName] }}"></td>
+                {% endfor %}
+            </tr>
+        {% else %}
+                <textarea name="{{ fieldName }}" id="textArea_{{ pId }}_{{ vId }}"
+                      rows="{% if pRow.p_engine_values.rowHeight %}{{ pRow.p_engine_values.rowHeight }}{% else %}15{% endif %}">{{ vRow.lov_value }}</textarea>
+            {#<!--
+                <input type="button" onclick="removeIntrotext_{{ pId }}_{{ vId }}();" value="HTML">
+                <input type="button" onclick="addIntrotext_{{ pId }}_{{ vId }}();" value="WYSIWYG">
+
+                <textarea name="{{ fieldName }}" id="textArea_{{ pId }}_{{ vId }}"
+                      rows="{% if pRow.p_engine_values.rowHeight %}{{ pRow.p_engine_values.rowHeight }}{% else %}30{% endif %}">{{ vRow.lov_value }}</textarea>
+                <script type="text/javascript">
+                    bkLib.onDomLoaded(function() {  newIntrotext_{{ pId }}_{{ vId }} = new nicEditor({fullPanel : true}).panelInstance('textArea_{{ pId }}_{{ vId }}');});
+                    var newIntrotext_{{ pId }}_{{ vId }};
+                    function addIntrotext_{{ pId }}_{{ vId }}() {newIntrotext_{{ pId }}_{{ vId }} = new nicEditor({fullPanel : true}).panelInstance('textArea_{{ pId }}_{{ vId }}');}
+                    function removeIntrotext_{{ pId }}_{{ vId }}() { newIntrotext_{{ pId }}_{{ vId }}.removeInstance('textArea_{{ pId }}_{{ vId }}');}
+                </script>
+            -->
+            #}
+        {% endif %}
+    {% elseif pType == 5 %}{# enum #}
+        <input type="checkbox" value="Yes" name="{{ fieldName }}"{% if vRow.lov_value == 'Yes' %} checked{% endif %}>
+    {% elseif pType == 8 %}{# date #}
+        <script>
+        $(function(){
+            $.datepicker.setDefaults($.datepicker.regional['ru']);
+            $("#datepicker_{{ pId }}").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd.mm.yy',
+                defaultDate: {{ vRow.lov_value|date('U') }}
+            });
+        });
+        </script>
+        <input id="datepicker_{{ pId }}" type="text" value="{{ vRow.lov_value|date('d.m.Y') }}" name="{{ fieldName }}" style="width:100px;text-align:center">
+    {% elseif pType == 9 or pType == 6 %}{# img && file #}
+        {% if vId == '' %}
+            <div class="imgListing">
+                <input type="file" multiple="true" name="uploadFile{{ pId }}[]">
+            </div>
+        {% else %}
+            <div class="imgListingBlockFull">
+                <div class="imgListingBlock">
+                    <a href="javascript:confirmRedirect('Удалить?', 'adm/{{ Core.getAction }}/{{ Core.getObj }}/?deleteImg={{ pId }}_{{ vId }}')">
+                            <img src="templates/system/img/del.png" style="position:absolute;top:2px;right:2px">
+                    </a>
+
+                    <a href="javascript:showBlackFont('editFile{{ vId }}');">
+                        {% if pType == 6 %}
+                            <img style="min-height: 80px;min-width: 80px;width: 80px;height: 80px" alt="{{ vRow.lov_name }}" title="{{ vRow.lov_name }}" src="templates/system/img/types/{{ vRow.lov_type }}.png">
+                        {% else %}
+                            <img style="min-height: 10px;min-width: 10px;" alt="{{ vRow.lov_name }}" title="{{ vRow.lov_name }}"
+                                 src="uploads/AbsoluteStructure/{{ vRow.lov_o_id }}/{{ vRow.lov_p_id }}/80_80/{{ vRow.lov_name }}">
+                        {% endif %}
+                    </a>
+
+                    <!--
+                    <div id="editFile{{ vId }}" class="showBlackFontGield" style="margin:-150px 0px 0px -425px;width:850px;">
+                        <a href="javascript:showBlackFont()"><img src="templates/system/img/del.png" class="delImg"></a>
+                        <h3>Файл &laquo;{{ vRow.lov_name }}&raquo;</h3>
+                        <table cellpadding="0" cellspacing="0" class="table">
+                            <tr>
+                                <td>URL: </td>
+                                <td>
+                                    <a href="uploads/AbsoluteStructure/{{ vRow.lov_o_id }}/{{ vRow.lov_p_id }}/{{ vRow.lov_name }}" target="_blank">
+                                        uploads/AbsoluteStructure/{{ vRow.lov_o_id }}/{{ vRow.lov_p_id }}/{{ vRow.lov_name }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:100px">Описание:</td>
+                                <td><textarea name="newFileDsc{{ vId }}">{{ vRow.lov_dsc }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td>Позиция:</td>
+                                <td><input type="text" value="{{ vRow.lov_order }}" name="newFileOrder{{ vId }}"></td>
+                            </tr>
+                            <tr>
+                                <td>Удалить</td>
+                                <td><input type="checkbox" value="true" name="newFileDelete{{ vId }}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    -->
+                </div>
+
+                <div>
+                    <a target="_blank" href="uploads/AbsoluteStructure/{{ vRow.lov_o_id }}/{{ vRow.lov_p_id }}/{{ vRow.lov_name }}">
+                        <img src="templates/system/img/download.png">
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+    {% endautoescape %}
+{% endmacro %}

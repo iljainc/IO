@@ -1,0 +1,153 @@
+
+{% autoescape false %}
+<script>
+function editIframe(id) {
+    showBlackFont('iframeBlock');
+    jQuery('#iframeBlock iframe').attr('src', 'adm/{{ Core.getAction }}/'+id+'/iframeAjax/');
+}
+</script>
+
+<div id="iframeBlock" style="width: 80%;height: 500px;margin: -270px 0px 0px -40%;" class="showBlackFontGield">
+    <a href="javascript:showBlackFont('')"><img src="templates/system/img/del.png" class="delImg"></a>
+    <iframe src="" style="width:100%;height:100%;border:0px"></iframe>
+</div>
+
+<tr valign="top">
+    <td>Фото: </td>
+    <td>
+        <div style="clear:both;padding:0px 0px 10px 0px">
+            <input type="file" multiple="true" name="addPhotoFiles[]">
+        </div>
+
+<script type = "text/javascript">
+    $(document).ready(function() {
+        $("#sortableFoto").sortable({
+            stop: function(event, ui) {
+                arr = new Array();
+                //Проходим по порядку всех детей(после вызова события stop у нас в DOM уже измененный порядок)
+                $(this).children().each(function()
+                {
+                    arr.push(this.id); //и заносим в массив id текущего элемента
+                });
+
+                var encoded = $.toJSON( arr );
+
+                //post-запрос
+                $.post("adm/{{ Core.getAction }}/{{ Core.getObj }}/?ajax", {objSort: encoded}, function(data) { });
+            }
+        });
+    });
+</script>
+        {#
+        <!--
+        {% if Core.moduleData.AbsoluteStructure.objListingFoto %}
+            {% set ASShopData = Core.moduleData.AbsoluteStructure.objListingFoto %}
+            <div style="clear: both">
+            <ul id="sortableFoto">
+                {% for id in ASShopData %}
+                    <li class="imgListingBlockFull" id="{{ id.o_id }}">
+                        <div class="imgListingBlock">
+                            <a href="javascript:confirmRedirect('Удалить?', 'adm/{{ Core.getAction }}/{{ Core.getObj }}/?deleteSubObj={{ id.o_id }}')">
+                                <img src="templates/system/img/del.png" style="position:absolute;top:2px;right:2px"></a>
+                            <a class="imgListingBlockA" href="javascript: editIframe({{ id.o_id }})">{{ id.o_name }}</a>
+                        </div>
+                        <div>
+                            <a target="_blank" href="uploads/AbsoluteStructure/{{ id.o_id }}/{{ Core.moduleData.AbsoluteStructure.systemVars.fotoPId }}/{{ Core.moduleData.AbsoluteStructure.structure.o_mr_name.value }}.jpg">
+                                <img src="templates/system/img/download.png">
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            </div>
+        {% endif %}
+        -->
+        #}
+
+        {% set ASShopData           = Core.moduleData.ASShop %}
+        {% set AbsoluteStructure    = Core.moduleData.AbsoluteStructure %}
+        
+        {% if Core.moduleData.ASShop.objListing %}
+            {# Шаблон расчитан на 3 уровня вложенности #}
+            <div style="clear: both">
+            <ul id="sortableFoto">
+                {% for id in ASShopData.objListing[AbsoluteStructure.structure.o_id.value] %}
+                    {% if ASShopData.systemVars.fotoPGId == id.pg_id %}
+                        <li class="imgListingBlockFull" id="{{ id.id }}">
+                            <div class="imgListingBlock">
+                                <a href="javascript:confirmRedirect('Удалить?', 'adm/{{ Core.getAction }}/{{ Core.getObj }}/?deleteSubObj={{ id.id }}')">
+                                    <img src="templates/system/img/del.png" style="position:absolute;top:2px;right:2px"></a>
+                                <a class="imgListingBlockA" href="javascript: editIframe({{ id.id }})">{{ id.name }}</a>
+                            </div>
+                            <div>
+                                <a target="_blank" href="uploads/AbsoluteStructure/{{ id.id }}/{{ Core.moduleData.ASShop.systemVars.fotoPId }}/{{ Core.moduleData.AbsoluteStructure.structure.mr_name.value }}.jpg">
+                                    <img src="templates/system/img/download.png">
+                                </a>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            </div>
+        {% endif %}
+    </td>
+</tr>
+<tr valign="top">
+    <td>Расширенные св-ва: </td>
+    <td>
+<style>
+    #sortableSubObj {padding: 0px; margin: 0px;}
+    #sortableSubObj li {display: block; margin:0px; padding: 0px 32px 5px  0px}
+    #sortableSubObj li img {position: relative; top: 6px ;left:5px}
+    #sortableSubObj li .colorBlock {height: 16px; width: 16px; min-height: 16px; min-width: 16px;}
+</style>
+
+<script type = "text/javascript">
+    $(document).ready(function() {
+        $("#sortableSubObj").sortable({
+            stop: function(event, ui) {
+                arr = new Array();
+                //Проходим по порядку всех детей(после вызова события stop у нас в DOM уже измененный порядок)
+                $(this).children().each(function()
+                {
+                    arr.push(this.id); //и заносим в массив id текущего элемента
+                });
+
+                var encoded = $.toJSON( arr );
+
+                //post-запрос
+                $.post("adm/{{ Core.getAction }}/{{ Core.getObj }}/?ajax", {objSort: encoded}, function(data) { });
+            }
+        });
+    });
+</script>
+
+        {% if Core.moduleData.ASShop.objListing %}
+            {# Шаблон расчитан на 3 уровня вложенности #}
+            <div style="clear: both">
+            <ul id="sortableSubObj" type="none">
+                {% for id in ASShopData.objListing[AbsoluteStructure.structure.o_id.value] %}
+                    {% if ASShopData.systemVars.fotoPGId != id.pg_id %}
+
+                        <li id="{{ id.id }}">
+                            <img src="templates/system/img/drag.png" style="cursor: pointer; position: relative; top: 2px; left: 0px">
+                            
+                            <a href="adm/ASShop/{{ id.id }}/">{{ id.name }}</a>
+                            
+                            {% if id['Цвет 1'] %}<span style="background: {{ id['Цвет 1'] }};{% if id['Цвет 1'] == '#ffffff' %} border: 1px grey solid{% endif %}" class="colorBlock">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{% endif %}
+                            {% if id['Цвет 2'] %}<span style="background: {{ id['Цвет 2'] }};{% if id['Цвет 2'] == '#ffffff' %} border: 1px grey solid{% endif %}" class="colorBlock">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{% endif %}
+
+                            {% if id['Цена'] %}<span style="padding-left: 15px">{{ id['Цена'] }} руб.</span>{% endif %}
+                            
+                            <a href="javascript:confirmRedirect('Удалить?', 'adm/{{ Core.getAction }}/{{ Core.getObj }}/?deleteSubObj={{ id.id }}')">
+                                <img src="templates/system/img/del.png">
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            </div>
+        {% endif %}
+    </td>
+</tr>
+{% endautoescape %}

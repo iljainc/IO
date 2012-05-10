@@ -1,0 +1,277 @@
+{% import "obeton/forms.html" as forms %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>{% block title %}{{ Core.title }}{% endblock %}{% if Core.getAction == '' %}ШТАРКОМ - технологии бетона{% endif %}</title>
+    <base href="{{ Core.URL }}" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+    <script type="text/javascript" src="templates/obeton/js/jquery-1.6.4.js"></script>
+    <script type="text/javascript" src="templates/obeton/js/mosaic.1.0.1.js"></script>
+    <script type="text/javascript" src="templates/obeton/js/cufon-yui.js"></script>
+    <script type="text/javascript" src="templates/obeton/js/DINCondensedC_400.font.js"></script>
+    <script type="text/javascript">
+      Cufon.replace('.phone1');
+      Cufon.replace('.phone2');
+    </script>
+    <script type="text/javascript" src="templates/system/js/function.js"></script>
+    <script type="text/javascript" src="templates/system/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="templates/system/js/jquery.ui.datepicker-ru.js"></script>
+    <script type="text/javascript" src="templates/system/js/galery/galery.js"></script>
+    <script type="text/javascript" src="templates/obeton/js/prototype.js"></script>
+    <script type="text/javascript" src="templates/obeton/js/scriptaculous.js?load=effects,builder"></script>
+    <script type="text/javascript" src="templates/obeton/js/lightbox.js"></script>
+    
+    <link href="templates/system/js/jquery-ui-css-framework.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ Core.tplPath }}css/main.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ Core.tplPath }}css/lightbox.css" rel="stylesheet" type="text/css"/>
+    <link href="templates/system/js/galery/galery.css" rel="stylesheet" type="text/css"/>
+
+    <!--<link href="templates/obeton/css/reset.css" rel="stylesheet" type="text/css"/>-->
+
+    {% autoescape false %}
+    {{ Core.css }}
+
+    {% if Core.js %}
+    {{ Core.js }}
+    {% endif %}
+    {% endautoescape %}
+    <script>
+    jQuery(document).ready(function(){
+        jQuery(".LogoLeft").animate({opacity: "hide"});
+        jQuery(".LogoLeft").css("display","none");
+        jQuery(".link").find("a").css({ opacity: 0.6 });
+        jQuery(".linkone").find("a").css({ opacity: 0.6 });
+        function showOne() {
+            jQuery(".LogoRight2").css("display","none");
+            jQuery(".LogoRight3").css("display","none");
+        }
+        function showTwo() {
+            jQuery(".LogoLeft").delay(100).fadeIn("2000");
+            jQuery(".LogoRight2").delay(400).animate({opacity: "show", top: "15px" ,right: "15px"}, "slow");
+            jQuery(".LogoRight3").delay(1200).fadeIn("slow");
+        }
+        showOne();
+        showTwo();
+        
+        jQuery(".linkone").delay(400).bind("mouseenter",function(){
+            jQuery(".LogoRight3").css("display", "none");
+            jQuery(this).find("a").slideDown();
+        }).bind("mouseleave",function(){
+                jQuery(this).find("a").slideUp();
+                jQuery(".LogoRight3").fadeIn("slow");
+        });
+     
+        jQuery(".link").delay(1000).bind("mouseenter",function(){
+            jQuery(this).find("a").delay(400).slideDown();
+        }).bind("mouseleave",function(){
+                jQuery(this).find("a").slideUp();
+        });
+    });
+    </script>
+  </head>
+  <body{% if Core.getAction == '' %} style="background: url('/templates/obeton/img/background.jpg') #fff no-repeat scroll center top;"{% endif %}>
+    <div id="Container">
+      <div id="Header">
+        <div id="TopMenu">
+          <div id="TopMenuLogo">
+            <div id="Logo">
+              <a href="/">
+                <img src="/templates/obeton/img/logo.png" alt="Штарком - технологии бетона" />
+              </a>
+            </div>
+          </div>
+          <div id="TopMenuRight">
+            <div id="TopMenuRightTop">
+              <div class="phone1">(495)</div>
+              <div class="phone2">510 63 63</div>
+              <div id="TopMenuRightTopBox">
+                <div id="TopMenuRightTopLogin">
+                 <!-- <a href="adm/">Войти</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+                  <a href="adm/">Регистрация</a>-->
+                </div>
+                <div id="TopMenuRightTopSearch">
+                  <form action="doSearch/" method="get">
+                    <p><input type="text" id="number" name="search" value="{{ _GET.search }}" maxlength="15" /></p>
+                    <p><input type="submit" id="btn" value="Найти" /></p>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div id="TopMenuRightBot">
+              <div id="TopMenuRightBotMenu">
+                <table cellpadding="0" cellspacing="0"><tr>
+                    <!--<td style="border: 0px"><a href="/">Главная</a></td>-->
+                    {% for id in Core.menu['Верхнее меню'] %}
+                        <td style="border: 0px">
+                            <a href="{{ id.url }}">{{ id.name }}</a>
+                        </td>
+                    {% endfor %}
+                </tr></table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if Core.getAction != '' %}
+      <div id="ContentCont">
+        <div id="ContentContLeft">
+          <div class="ContentBlock2">
+            <div class="ContentBlockHead">
+              <div class="ContentBlockHeadLeft">Продукция</div>
+            </div>
+            <div class="ContentBlockMenu">
+              <!-- Меню товаров -->
+              {% if Core.moduleData.ASShop %}
+              {% set inherit = Core.moduleData.ASShop.menu %}
+              {% set systemVars = Core.moduleData.ASShop.systemVars %}
+              <ul>
+                {% for id in inherit[systemVars.rootId]|keys %}
+
+                {% if inherit[systemVars.rootId][id].name == 'Сваи' %}
+                      </ul>
+
+                        <div class="ContentBlockHead">
+                          <div class="ContentBlockHeadLeft">Готовые изделия</div>
+                        </div>
+                      <ul>
+              {% endif %}
+
+
+                {% if inherit[systemVars.rootId][id].name == 'Бетон' %}
+                    <li><a href="Goods/beton/#odincovo">Бетон в Одинцово</a></li>
+                    <li><a href="Goods/beton/#tuchcovo">Бетон в Тучково</a></li>
+                {% else %}
+                    <li><a href="Goods/{{ inherit[systemVars.rootId][id].mr_name }}/">{{ inherit[systemVars.rootId][id].name }}</a></li>
+                {% endif %}
+                
+                {% endfor %}
+              </ul>
+              {% endif %}
+              <!-- /Меню товаров -->
+            </div>
+          </div>
+          <div class="ContentBlock2">
+            <div class="ContentBlockHead">
+              <div class="ContentBlockHeadLeft">Услуги, Аренда</div>
+            </div>
+            <div class="ContentBlockMenu">
+              <ul>
+                {% for id in Core.menu.pageServicesMenu %}
+                <li><a href="{{ id.url }}">{{ id.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        <!--
+          <div class="ContentBlock2">
+            <div class="ContentBlockHead">
+              <div class="ContentBlockHeadLeft">Спецпредложения</div>
+            </div>
+            <div class="ContentBlockMenu">
+              <ul>
+                {% for id in Core.menu.pageSgecMenu %}
+                <li><a href="{{ id.url }}">{{ id.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        -->
+          <div class="ContentBlock2">
+            <div class="ContentBlockHead">
+              <div class="ContentBlockHeadLeft">Статьи</div>
+            </div>
+            <div class="ContentBlockMenu">
+              <ul>
+                {% for id in Core.menu.pageArtMenu %}
+                <li><a href="{{ id.url }}">{{ id.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div id="ContentContRight">
+              <h1>{% block H1 %}{{ Core.H1 }}{% endblock %}</h1>
+          <div id="ContentContRightBox">
+            {% block content %}
+                {% if Core.pages %}
+                    <div class="pages">{{ forms.pages(Core) }}</div>
+                {% endif %}
+
+                {% if Core.contentTpl %}
+                    {% include Core.contentTpl %}
+                {% endif %}
+
+                {% autoescape false %}
+                    {{ Core.content }}
+                {% endautoescape %}
+
+                {% if Core.pages %}
+                    <div class="pages">{{ forms.pages(Core) }}</div>
+                {% endif %}
+            {% endblock %}
+    {% else %}
+        {% include "/obeton/indexmenu.html" %}
+    {% endif %}
+          </div>
+        </div>
+      </div>
+      <div id="Footer">
+        <div id="FooterLogo">
+          <a href="/">
+            <img src="/templates/obeton/img/logo_bot.jpg" alt="Штарком - технологии бетона" />
+          </a>
+        </div>
+        <div id="FooterMid">
+          <div id="FooterMidTop">
+                <table><tr>
+                    <td style="border:0px"><a href="/">Главная</a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            
+                    {% for id in Core.menu['Верхнее меню'] %}
+                        <td style="border:0px">
+                            <a href="{{ id.url }}">{{ id.name }}</a>
+                            {% if loop.last %}
+                            {% else %}&nbsp;&nbsp;&nbsp;&nbsp;
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr></table>
+          </div>
+          <div id="FooterMidBot">
+              <table>
+                  <tr valign="top">
+                      <td style="border: 0px; padding: 5px 10px 0px 0px">
+                            Московская область, г. Одинцово, Южная промзона, ул. Южная д.4. Тел.: (495)  <span>510-63-63</span><br>
+                            Московская область, г. Тучково, Технологическое ш., д. 3 строение 7. Тел.: (495) <span>741-54-56</span><br>
+                      </td>
+                  </tr>
+              </table>
+          </div>
+        </div>
+        <div id="FooterRight"><!-- Yandex.Metrika informer -->
+<a href="http://metrika.yandex.ru/stat/?id=7423165&amp;from=informer"
+target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/7423165/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" onclick="try{Ya.Metrika.informer({i:this,id:7423165,type:0,lang:'ru'});return false}catch(e){}"/></a>
+<!-- /Yandex.Metrika informer -->
+
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter7423165 = new Ya.Metrika({id:7423165, enableAll: true});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
+<noscript><div><img src="//mc.yandex.ru/watch/7423165" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter --></div>
+      </div>
+    </div>
+    <script type="text/javascript"> Cufon.now(); </script>
+  </body>
+</html>
+

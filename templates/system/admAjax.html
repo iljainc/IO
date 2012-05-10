@@ -1,0 +1,68 @@
+{% import "system/forms.html" as forms %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{% block title %}{{ Core.title }}{% endblock %}</title>
+<base href="{{ Core.URL }}" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<link rel="stylesheet" href="templates/system/css/main.css" type="text/css"/>
+
+<script LANGUAGE="JavaScript" SRC="templates/system/js/jquery.min.js"></script>
+<script LANGUAGE="JavaScript" SRC="templates/system/js/function.js"></script>
+<script LANGUAGE="JavaScript" SRC="templates/system/js/ata.js"></script>
+
+<script LANGUAGE="JavaScript" SRC="templates/system/js/jquery-ui.min.js"></script>
+<script LANGUAGE="JavaScript" SRC="templates/system/js/jquery.ui.datepicker-ru.js"></script>
+<link rel="stylesheet" href="templates/system/js/jquery-ui-css-framework.css" type="text/css"/>
+
+<script type="text/javascript" src="/templates/system/js/nicEdit/nicEdit.js"></script>
+
+{% autoescape false %}
+    {{ Core.css }}
+{% endautoescape %}
+
+{% autoescape false %}
+    {% if Core.js %}
+        {{ Core.js }}
+    {% endif %}
+{% endautoescape %}
+
+{% block head %}{% endblock %}
+
+</head>
+<body>
+
+<div class="mainBlock">
+
+{% autoescape false %}
+
+{% if Core.error %}
+    <div class="error">{{ Core.error }}</div>
+{% endif %}
+{% if Core.message %}
+    <div class="message">{{ Core.message }}</div>
+{% endif %}
+
+{% block content %}
+    {% if Core.pages %}
+        <div class="pages">{{ forms.pages(Core) }}</div>
+    {% endif %}
+    
+    {% if Core.contentTpl %}
+        {% include Core.contentTpl %}
+    {% endif %}
+    
+    {{ Core.content }}
+    
+    {% if Core.pages %}
+        <div class="pages">{{ forms.pages(Core) }}</div>
+    {% endif %}
+{% endblock %}
+</div>
+{% endautoescape %}
+
+<div class="bottom">
+    Copyright © 2010 - {{ Core.date|date('Y') }} Powered by JD CMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="http://jonydi.ru/" target="_blanck" style="padding:10px;background:#ffff00;color:#000">JonyDi</a>
+</div>

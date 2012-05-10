@@ -1,0 +1,8 @@
+<table style="font-family: monospace">
+{% for id in Core.moduleData.SystemStatus.SystemStatusLog %}
+    <tr>
+        <td>{{ loop.index }}. </td>
+        <td>{{ id }}</td>
+    </tr>
+{% endfor %}
+</table>

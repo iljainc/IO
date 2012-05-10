@@ -1,0 +1,10 @@
+#darkBG {display:none;width: 100%;height: 100%; background: url('/templates/system/js/galery/img/bg.png');position: fixed}
+
+#video {}
+
+#video .videoNavigation {height: 42px;}
+#video .closeImg {position: absolute;top:20px;right:20px;cursor: pointer}
+#video .numFielf {color:#000;font-size: 18px;position: absolute;top:20px;left:20px;white-space: nowrap;}
+
+#video .videoCenter {;padding:20px 20px 17px 20px;vertical-align: middle;text-align: center;}
+#video .videoImgDiv {position: fixed;top:50%;left:50%;/*margin:-170px 0px 0px -300px;*/text-align: center;background: #fff;}

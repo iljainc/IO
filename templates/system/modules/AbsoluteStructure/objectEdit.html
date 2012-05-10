@@ -1,0 +1,135 @@
+{% extends Core.moduleData.AbsoluteStructure.mainTpl %}
+
+{% set st = Core.moduleData.AbsoluteStructure.structure %}
+
+{% autoescape false %}
+{% if st.o_id.value %}
+    {% set title = "Редактировать " ~ st.o_pg_id.typeSpec[st.o_pg_id.value] ~ " «" ~ st.o_name.value ~ "»" %}
+    {% set submitValue = 'Сохранить' %}
+{% else %}
+    {% set title = 'Добавить новый объект' %}
+    {% set submitValue = 'Добавить' %}
+{% endif %}
+{% endautoescape %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block head %}
+<!--
+<script type="text/javascript" src="templates/system/js/ajax-upload/ajaxupload.js"></script>
+<script type="text/javascript" src="templates/system/js/ajax-upload/fileuploader.js"></script>
+<link href="templates/system/js/ajax-upload/fileuploader.css" rel="stylesheet" type="text/css" />
+-->
+{% endblock %}
+
+{% block H1 %}
+<h1>
+    {% for id in Core.moduleData.AbsoluteStructure.parent %}
+        <a href="adm/{{ Core.getAction }}/{{ id.o_id }}/">{{ id.o_name }}</a> / 
+    {% endfor %}
+    
+    <a href="adm/{{ Core.getAction }}/{{ st.o_id.value }}/">{{ st.o_name.value }}</a>
+</h1>
+{% endblock %}
+{% block content %}
+    {# Добавление нового объекта #}
+    <script>
+    /*
+     * Всплывающее окно
+     */
+    function addNewObj(PGId, buttonName) {
+        jQuery('#addPGId').val(PGId);
+        jQuery('#addSubmit').val(buttonName);
+        jQuery('#addh2').html(buttonName);
+        showBlackFont('addObj');
+        document.getElementById('addName').focus();
+    };
+
+    /*
+     * Форма добавления и редиректа объекта
+     */
+    jQuery(document).ready(function(){
+        jQuery('#addForm').submit(function() {
+            $.post('adm/{{ Core.getAction }}/{% if st.o_id.value %}{{ st.o_id.value }}{% else %}add{% endif %}/?ajax=true', $("#addForm").serialize(), function(data) {
+                
+                var reg = /^[0-9]+$/;
+                if (reg.test(data)) {
+                    window.location = '{{ Core.URL }}adm/{{ Core.getAction }}/'+data+'/';
+                } else {
+                    jQuery('#addError').addClass('error');
+                    jQuery('#addError').html(data);
+                };
+            });
+
+            return false;
+        });
+    });
+    
+    function setLoadFiles() {
+        $.post('adm/{{ Core.getAction }}/10/?ajax=true', $("#mainForm").serialize(), function(data) {
+            alert(data);
+        });
+    };
+
+    /*
+    var newIntrotext;
+
+    function addIntrotext(pId, vId) {
+        newIntrotext = new nicEditor({fullPanel : true}).panelInstance('textArea_'+pId+'_'+vId);
+    };
+    function removeIntrotext(pId, vId) {
+        newIntrotext.removeInstance('textArea_'+pId+'_'+vId);
+    };
+  */
+    </script>
+    
+    <form method="post" id="addForm">
+    <div id="addObj" class="showBlackFontGield" style="margin:-80px 0px 0px -225px;width:450px;">
+        <a href="javascript:showBlackFont('addObj')"><img src="templates/system/img/del.png" class="delImg"></a>
+        <div style="margin:0px auto 0px auto;">
+        <h3 id="addh2" style="text-align: left"></h3>
+            <div id="addError" style="padding:10px 0px"></div>
+            Название:
+            <input id="addPGId" name="addPGId" type="hidden" value="">
+            <input id="addName" name="addName" type="text" style="width:200px">
+            <input id="addSubmit" type="submit" value="">
+        </div>
+    </div>
+    </form>
+
+    {% if Core.moduleData.AbsoluteStructure.structure.o_pg_id.value %}
+
+        <form method="post" enctype="multipart/form-data" id="mainForm"
+            action="adm/{{ Core.getAction }}/{{ Core.getObj }}/{% if Core.getDerection %}{{ Core.getDerection }}/{% endif %}">
+        <input type="Hidden" name="MAX_FILE_SIZE" value="8388608">
+            <input type="hidden" name="doSave" value="true">
+            <table cellpadding="0" cellspacing="0" class="table">
+            <tr>
+                <th></th>
+                <td><input type="submit" value="{{ submitValue }}"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <a href="{{ Core.getAction }}/{{ Core.moduleData.AbsoluteStructure.structure.o_mr_name.value }}/">Просмотреть</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% if Core.moduleData.ASShop.systemVars.bazaURL and Core.moduleData.ASShop.systemVars.itemPGId == st.o_pg_id.value %}
+                        <a href="http://{{ Core.moduleData.ASShop.systemVars.bazaURL }}OrderItemEdit/?shopId={{ Core.moduleData.ASShop.systemVars.bazaShopID }}&lid={{ st.o_id.value }}">База</a>
+                    {% endif %}
+                </td>
+            </tr>
+                {# шаблон самого объекта #}
+                {% include "system/modules/AbsoluteStructure/globalForm.html" %}
+                {% if Core.moduleData.ASShop.addObjTemplate %}
+                    {% include Core.moduleData.ASShop.addObjTemplate %}
+                {% endif %}
+                {# шаблон значений свойств объекта #}
+                {% include "system/modules/AbsoluteStructure/globalFormValues.html" %}
+                <tr>
+                    <th></th>
+                    <td><input type="submit" value="{{ submitValue }}"></td>
+                </tr>
+            </table>
+        </form>
+
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,8 @@
+<table class="newsTab">
+    {% for id in Core.moduleData.newsListing %}
+    <tr>
+        <td>{{ loop.index+((Core.page-1)*Core.onPage) }}. </td>
+        <td><a href="News/{{ id.translit_url }}/">{{ id.title }}</a></td>
+    </tr>
+    {% endfor %}
+</table>

@@ -1,0 +1,58 @@
+
+
+<script>
+jQuery(document).ready(function(){
+    jQuery("#feedbackForm").submit(function () {
+        jQuery("input[name=int]").attr("value", "{{ _SESSION.feedbackRand }}");
+    });
+});
+</script>
+{% autoescape false %}
+<div style="padding:10px;display:block;position: absolute">
+        {% if Core.moduleData.feedback.msg %}<p>{{ Core.moduleData.feedback.msg }}{% endif %}
+
+        <form method="post" id="feedbackForm">
+        <input type="hidden" name="int" value="0">
+        <table cellpadding="2" cellspacing="0" style="width:400px;">
+        <tr>
+            <td colspan="2" style="text-align:center;font-weight:bold;padding:0px 0px 10px 0px">Форма обратной связи</td>
+        </tr>
+        <tr>
+            <td>Ваше имя:</td>
+            <td><input type="text" name="name" style="width:100%"></td>
+        </tr>
+        <tr>
+            <td>Ваша почта:</td>
+            <td><input type="text" name="eMail" style="width:100%"></td>
+        </tr>
+        <tr>
+            <td>Сообщение:</td>
+            <td><textarea name="text" rows="5" style="width:100%"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Отправить"></td>
+        </tr>
+        </table>
+        </form>
+</div>
+
+<div class="contentLeftBlock">
+    <div class="contentTextBlock">
+    <h1>Контактные данные</h1>
+
+    <p>Чтобы задать вопрос или получить дополнительную информацию относительно наших продуктов, пожалуйста, зарегистрируйтесь в
+        форме слева, или напишите непосредственно на
+        e-mail: <a href="mailto:{{ Core.moduleData.feedback.email }}">{{ Core.moduleData.feedback.email }}</a>.
+
+    <p>{{ Core.moduleData.feedback.address }}<br />
+    Телефон: {{ Core.moduleData.feedback.tel }}
+    
+    {% if Core.moduleData.feedback.company %}<p>Компания: {{ Core.moduleData.feedback.company }}{% endif %}
+    {% if Core.moduleData.feedback.site %}<p>Сайт: {{ Core.moduleData.feedback.site }}{% endif %}
+    {% if Core.moduleData.feedback.skype %}<p>Skype: {{ Core.moduleData.feedback.skype }}{% endif %}
+    {% if Core.moduleData.feedback.icq %}<p>ICQ: {{ Core.moduleData.feedback.icq }}{% endif %}
+
+    </DIV>
+</DIV>
+{% endautoescape %}

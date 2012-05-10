@@ -1,0 +1,19 @@
+AddDefaultCharset UTF-8
+
+RewriteEngine on
+php_value max_execution_time 10
+php_flag register_globals 1
+php_flag magic_quotes_gpc off
+php_flag display_errors on
+php_value error_reporting 2047
+
+ErrorDocument 404 /404.html
+
+RewriteRule     ^sitemap.xml$                                                                   index.php?der1=sitemap [L,QSA]
+RewriteRule     ^404.html$                                                                      index.php?der1=404 [L,QSA]
+
+RewriteRule     ^([0-9a-zA-Z_]*)\/?$                                                            index.php?der1=$1 [L,QSA]
+RewriteRule     ^([0-9a-zA-Z_]*)\/([0-9a-zA-Z_]*)\/?$                                           index.php?der1=$1&der2=$2 [L,QSA]
+RewriteRule     ^([0-9a-zA-Z_]*)\/([0-9a-zA-Z_]*)\/([0-9a-zA-Z_]*)\/?$                          index.php?der1=$1&der2=$2&der3=$3 [L,QSA]
+RewriteRule     ^([0-9a-zA-Z_]*)\/([0-9a-zA-Z_]*)\/([0-9a-zA-Z_]*)\/([0-9a-zA-Z_]*)\/?$         index.php?der1=$1&der2=$2&der3=$3&der4=$4 [L,QSA]
+

@@ -1,0 +1,38 @@
+
+
+<p><a href="/adm/FastLinks/?refreshFastLinks">Обновить весь кэш</a></p>
+<FORM method="post">
+
+<table cellpadding="0" cellspacing="5" class="table">
+
+<tr>
+    <th style="width:70px;"></th>
+    <th>Название</th>
+    <th>Картинка</th>
+    <th>URL</th>
+</tr>
+<tr>
+    <th>Добавить: </th>
+    <td><input type="text" value="" name="newTitle"></td>
+    <td><input type="text" value="" name="newImg"></td>
+    <td><input type="text" value="" name="newHref"></td>
+    <th><input type="submit" value="Добавить"></th>
+</tr>
+
+{% for id in Core.fastLinksArr %}
+    <tr>
+        <td>ID#{{ id.fl_id }}:</td>
+        <td><input type="text" value="{{ id.fl_title }}" name="newTitle{{ id.fl_id }}"></td>
+        <td><input type="text" value="{{ id.fl_img }}" name="newImg{{ id.fl_id }}"></td>
+        <td><input type="text" value="{{ id.fl_href }}" name="newHref{{ id.fl_id }}"></td>
+        <td><a href="javascript:confirmRedirect('Удалить?', '/adm/FastLinks/?delete={{ id.fl_id }}')"><img src="images/del.png"></a></td>
+    </tr>
+    {% if loop.last %}
+    <tr>
+        <td></td>
+        <td><input type="submit" value="Сохранить"></td>
+    </tr>
+    {% endif %}
+{% endfor %}
+
+</table></form>

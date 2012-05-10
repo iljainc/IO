@@ -1,0 +1,17 @@
+{% extends "obeton/index.html" %}
+{% set front = Core.moduleData.ASPage.object %}
+{% block H1 %}{{ front.name }}{% endblock %}
+{% block title %}{{ front.name }}{% endblock %}
+{% block content %}
+
+{% autoescape false %}
+    {{ front['Описание'] }}
+    {{ front["Сопутствующая информация"] }}
+{% endautoescape %}
+
+{% endblock %}
+
+
+
+
+

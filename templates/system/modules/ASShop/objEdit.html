@@ -1,0 +1,89 @@
+
+{% autoescape false %}
+<script>
+function editIframe(id) {
+    showBlackFont('iframeBlock');
+    jQuery('#iframeBlock iframe').attr('src', 'adm/{{ Core.getAction }}/'+id+'/iframeAjax/');
+}
+</script>
+
+<div id="iframeBlock" style="width: 80%;height: 500px;margin: -270px 0px 0px -40%;" class="showBlackFontGield">
+    <a href="javascript:showBlackFont('')"><img src="templates/system/img/del.png" class="delImg"></a>
+    <iframe src="" style="width:100%;height:100%;border:0px"></iframe>
+</div>
+
+<tr valign="top">
+    <td>Фото: </td>
+    <td>
+        <div style="clear:both;padding:0px 0px 10px 0px">
+            <input type="file" multiple="true" name="addPhotoFiles[]">
+        </div>
+
+<script>
+    $(function() {
+        $( "#sortableFoto" ).sortable();
+    });
+</script>
+
+<script type = "text/javascript">
+    $(document).ready(function() {
+        $("#sortableFoto").sortable({
+            stop: function(event, ui) {
+                arr = new Array();
+                //Проходим по порядку всех детей(после вызова события stop у нас в DOM уже измененный порядок)
+                $(this).children().each(function()
+                {
+                    arr.push(this.id); //и заносим в массив id текущего элемента
+                });
+
+                var encoded = $.toJSON( arr );
+
+                //post-запрос
+                $.post("adm/{{ Core.getAction }}/{{ Core.getObj }}/?ajax", {objSort: encoded}, function(data) { });
+            }
+        });
+    });
+</script>
+
+        {% if Core.moduleData.AbsoluteStructure.objListingFoto %}
+            {% set ASShopData = Core.moduleData.AbsoluteStructure.objListingFoto %}
+            <ul id="sortableFoto">
+                {% for id in ASShopData %}
+                    <li class="imgListingBlockFull" id="{{ id.o_id }}">
+                        <div class="imgListingBlock">
+                            <a href="javascript:confirmRedirect('Удалить?', 'adm/{{ Core.getAction }}/{{ Core.getObj }}/?deleteSubObj={{ id.o_id }}')">
+                                <img src="templates/system/img/del.png" style="position:absolute;top:2px;right:2px"></a>
+                            <a class="imgListingBlockA" href="javascript: editIframe({{ id.o_id }})">{{ id.o_name }}</a>
+                        </div>
+                        <div>
+                            <a target="_blank" href="uploads/AbsoluteStructure/{{ id.o_id }}/{{ Core.moduleData.AbsoluteStructure.systemVars.fotoPId }}/{{ Core.moduleData.AbsoluteStructure.structure.o_mr_name.value }}.jpg">
+                                <img src="templates/system/img/download.png">
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if Core.moduleData.AbsoluteStructure.objListing %}
+            {% set ASShopData = Core.moduleData.AbsoluteStructure.objListing %}
+            <ul id="sortableFoto">
+                {% for id in ASShopData %}
+                    <li class="imgListingBlockFull" id="{{ id.o_id }}">
+                        <div class="imgListingBlock">
+                            <a href="javascript:confirmRedirect('Удалить?', 'adm/{{ Core.getAction }}/{{ Core.getObj }}/?deleteSubObj={{ id.o_id }}')">
+                                <img src="templates/system/img/del.png" style="position:absolute;top:2px;right:2px"></a>
+                            <a class="imgListingBlockA" href="javascript: editIframe({{ id.o_id }})">{{ id.o_name }}</a>
+                        </div>
+                        <div>
+                            <a target="_blank" href="uploads/AbsoluteStructure/{{ id.o_id }}/{{ Core.moduleData.AbsoluteStructure.systemVars.fotoPId }}/{{ Core.moduleData.AbsoluteStructure.structure.o_mr_name.value }}.jpg">
+                                <img src="templates/system/img/download.png">
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </td>
+</tr>
+{% endautoescape %}

@@ -1,0 +1,38 @@
+<form method="post" id="personalForm" action="Personal/">
+    <table>
+        <!--<tr><td>Имя: </td><td><input type="text" name="newName" id="newName" value="{{ Core.moduleData.User.u_name }}"></td></tr>-->
+        <tr><td>Почта: </td><td><input type="text" name="newMail" id="newMail" value="{{ Core.moduleData.User.u_mail }}"></td></tr>
+        <tr><td>Пароль: </td><td><input type="password" value="" autocomplete="off" name="newPass" id="newPass" style="width:100%"></td></tr>
+        <tr><td>Повторите пароль: </td><td><input type="password" value="" autocomplete="off" name="newPassCheck" style="width:100%" id="newPassCheck"></td></tr>
+
+        {% for id in Core.moduleData.User.iniUserData|keys %}
+            <tr>
+                <td>{{ Core.moduleData.User.iniUserData[id] }}: </td>
+                <td><input type="text" value="{{ Core.moduleData.User.UserData[id] }}" name="{{ id }}"></td>
+            </tr>
+        {% endfor %}
+        
+        <tr><td></td><td><input type="submit" name="" value="Сохранить"></td><td><div id="msg"></div></td></tr>
+    </table>
+</form>
+
+
+    <script>
+    jQuery('#personalForm').submit(function() {
+        if (jQuery('#newMail').val() == '') {
+            jQuery('#msg').html('<span style="color:red">Почта не может быть пустой!</span>')
+            return false;
+        }
+
+        p1 = jQuery('#newPass').val();
+        p2 = jQuery('#newPassCheck').val();
+        
+        if (p1 != p2) {
+          jQuery('#msg').html('<span style="color:red">Пароли не совпадают!</span>')
+          return false;
+        }
+
+        return true;
+    });
+
+    </script>

@@ -1,0 +1,8 @@
+<div id="leftMenuSpecLinks">
+    <a {% if _GET.value == 'Перспективный' %} class="selected"{% endif %} href="adm/ASShop/?searchByProperty=Статус&value=Перспективный">Перспективный</a>
+    <a {% if _GET.value == 'Заполняется' %} class="selected"{% endif %}href="adm/ASShop/?searchByProperty=Статус&value=Заполняется">Заполняются</a>
+    <a {% if _GET.value == 'Готов' %} class="selected"{% endif %}href="adm/ASShop/?searchByProperty=Статус&value=Готов">Готовые</a>
+    <a {% if _GET.value == 'Подтвержден' %} class="selected"{% endif %}href="adm/ASShop/?searchByProperty=Статус&value=Подтвержден">Подтвержденые</a>
+</div>
+
+<hr>

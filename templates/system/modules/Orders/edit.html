@@ -1,0 +1,50 @@
+{% autoescape false %}<form method="post">
+<table cellpadding="0" cellspacing="0" class="table" style="width:100%">
+    <tr><th style="width:10px">Имя: </th>      <td><input type="text" value="{{ Core.moduleVars.o_fio }}" name="newFio"></td></tr>
+    <tr><th>Почта: </th><td><input type="text" value="{{ Core.moduleVars.o_mail }}" name="newMail"></td></tr>
+    <tr><th>Телефон: </th><td><input type="text" value="{{ Core.moduleVars.o_tel }}" name="newTel"></td></tr>
+    <tr><th>Статус: </th>   <td><select name="newStatus">';
+
+    {% for id in Core.moduleVars.statusArr|keys %}
+        <option value="{{ id }}"{% if Core.moduleVars.o_status==id %} selected{% endif %}>{{ Core.moduleVars.statusArr[id].name }}</option>
+    {% endfor %}
+
+    </select></td></tr>
+    <tr><th>Адрес: </th><td><textarea name="newAddress">{{ Core.moduleVars.o_address }}</textarea></td></tr>
+    <tr><th>Комментарии: </th><td><textarea name="newComm">{{ Core.moduleVars.o_comm }}</textarea></td></tr>
+    <tr><th>Скидка: </th><td><input type="text" name="newSale" value="{{ Core.moduleVars.o_sale }}" style="width:30px"> %</td></tr>
+    <tr><th>Товары </th><td>
+
+        <table>
+        <tr>
+            <th>№</th>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Колличество</th>
+            <th>Сумма</th>
+        </tr>
+    {% for id in Core.moduleVars.items|keys %}
+        {% for addedName in Core.moduleVars.items[id].num|keys %}
+            <tr>
+                <td>{{ id }}</td>
+                <td>{{ Core.moduleVars.items[id].name }}</td>
+                <td>{{ Core.moduleVars.items[id].prise }}</td>
+                <td style="text-align:center;"><input name="num{{ Core.moduleVars.items[id].num[addedName].oi_id }}" style="text-align:center;width:30px" value="{{ Core.moduleVars.items[id].num[addedName].num }}"></td>
+                <td>{{ Core.moduleVars.items[id].prise*Core.moduleVars.items[id].num[addedName].num }}</td>
+            </tr>
+        {% endfor %}
+    {% endfor %}
+        <tr>
+            <td colspan="4" style="text-align:right">Итого: </td>
+            <td>{{ Core.moduleVars.totalPrise }}</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align:right">Итого со скидкой: </td>
+            <td>{{ Core.moduleVars.total }}</td>
+        </tr>
+        </table>
+
+    </td></tr>
+
+<tr><td></td><td><input type="submit" value="Сохранить"></td></tr>
+</table></form>{% endautoescape %}

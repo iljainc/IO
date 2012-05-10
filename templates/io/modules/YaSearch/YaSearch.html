@@ -1,0 +1,122 @@
+{% extends "obeton/index.html" %}
+{% set front = Core.moduleData.YaSearch %}
+{% block H1 %}Поиск: {{ _GET.search }}{% endblock %}
+{% block title %}Поиск: {{ _GET.search }}{% endblock %}
+{% block content %}
+
+{% autoescape false %}
+
+    {% if front.error %}
+
+    {% endif %}
+
+    {% if front.found %}
+        <style>
+            .searchItem         {padding: 10px 0px 20px 0px; position: relative}
+            .searchItem .num     {float:right ; position: absolute}
+            .searchItem .title   {margin-left: 30px}
+            .searchItem .text    {margin-left: 30px}
+            .searchItem .url a   {margin-left: 30px; color: green}
+        </style>
+        {% set i = 1 %}
+        {% for row in front.found %}
+            <div class="searchItem">
+                <div class="num">{{ i }}. </div>
+                <div class="title"><a href="{{ row.url }}">{{ row.title }}</a></div>
+                <div class="text">
+                    {% for rowP in row.passages.passage %}
+                        {{ rowP }}
+                    {% endfor %}
+
+                    {{ row.passages.passage }}
+                </div>
+                <div class="url"><a style="color: green" href="{{ row.url }}">{{ row.url }}</a></div>
+            </div>
+            {% set i = i+1 %}
+        {% endfor %}
+    {% endif %}
+
+
+   <!--
+
+
+
+    
+            if ($error) {
+                print "Ошибка: " . $error[0];
+            } else {
+
+                print "<p style='font-size: 80%'>Результат поиска: страниц — <b>$found_all</b></p><br/>\n";
+                print "<ol start='" . ($page * 10 + 1) . "'>\n";
+                foreach ($found as $item) {
+
+                    print "<li>";
+                    print "<a href='{$item->url}'>" . $this->highlight_words($item->title) . "</a><br/>\n";
+
+                    print "<ul>";
+                    if ($item->passages) {
+
+                        foreach ($item->passages->passage as $passage) {
+
+                            print "<li style='font-size: 80%'>" . $this->highlight_words($passage) . "</li><br/>\n";
+                        }
+
+                    }
+                    print "<span style='color: gray; font-size: 80%'>{$item->url}</span>";
+                    print "</ul></li><br/>\n";
+
+                }
+
+
+                print "</ol>\n";
+                $this->print_pager ($found_all, $query, $host, $page);
+            }
+-->
+
+
+{#
+<p>{{ front['Описание'] }}
+    {{ front["Сопутствующая информация"] }}
+
+    <table class="newsBlocksLinks" cellpadding="0" cellspacing="0" style="border:0px"><tr valign="middle">
+      <!-- Меню новости -->
+      {% set inherit = Core.moduleData.ASNews.menu %}
+      {% set systemVars = Core.moduleData.ASNews.systemVars %}
+      {% set i = 0 %}
+      {% set k = 0 %}
+        {% for id in Core.moduleData.ASNews.menu %}
+                  <td class="newsBlockLink" style="text-align: left {% if front.name == id.name %}; background: #eee{% endif %}">
+                      <div style="position: relative">
+                          <!--<div class="img">
+                            <img src ="/templates/obeton/img/{% if id.type == "новость" %}i_new.png{% elseif id.type == "сообщение" %}i_mess.png{% elseif id.type == "предупреждение" %}i_alert.png{% endif %}" />
+                          </div>-->
+                        <a href="{{ id.url }}" {% if front.name == id.name %}style="color:#000"{% endif %}>
+                          {{ id.name }}
+                          <!--<div style="float:right;color: #557cb1;">
+                             {{ id.date|date("d.m.Y") }}
+                          </div>
+                          -->
+                        </a>
+                      </div>
+                  </td>
+          {% set i = i + 1 %}
+
+
+          {% if k == 1 %}
+              {% set k = 0 %}
+                </tr><tr valign="middle">
+          {% else %}
+            {% set k = k + 1 %}
+          {% endif %}
+        {% endfor %}
+      <!-- /Меню новости -->
+    </tr></table>
+#}
+    {% endautoescape %}
+
+{% endblock %}
+
+
+
+
+

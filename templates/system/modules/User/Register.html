@@ -1,0 +1,43 @@
+
+{% if Core.user.u_id %}
+    
+{% else %}
+
+    <form method="post" id="registerForm">
+    <input type="hidden" id="sKey" name="sKey" value="">
+        <table>
+            <tr><td>Почта: </td><td><input type="text" name="newMail" id="newMail"></td></tr>
+            <tr><td>Пароль: </td><td><input type="password" name="newPass" id="newPass" style="width:100%"></td></tr>
+            <tr><td>Повторите пароль: </td><td><input type="password" name="newPassCheck" style="width:100%" id="newPassCheck"></td></tr>
+            <tr><td></td><td><input type="submit" name="" value="Зарегистрироваться"></td><td><div id="msg"></div></td></tr>
+        </table>
+    </form>
+
+    <script>
+    jQuery('#sKey').val({{ Core.moduleData.User.UserCheckCode }});
+
+    jQuery('#registerForm').submit(function() {
+        if (jQuery('#newMail').val() == '') {
+            jQuery('#msg').html('<span style="color:red">Почта не может быть пустой!</span>')
+            return false;
+        }
+
+        p1 = jQuery('#newPass').val();
+        p2 = jQuery('#newPassCheck').val();
+
+        if (p1 == '') {
+          jQuery('#msg').html('<span style="color:red">Пароли не может быть пустым!</span>')
+          return false;
+        }
+
+        if (p1 != p2) {
+          jQuery('#msg').html('<span style="color:red">Пароли не совпадают!</span>')
+          return false;
+        }
+
+        return true;
+    });
+
+    </script>
+
+{% endif %}

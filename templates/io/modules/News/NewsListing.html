@@ -1,0 +1,36 @@
+{% autoescape false %}
+
+{% if Core.moduleData.News %}
+    <img class="prodImg" src="uploads/News/{{ Core.moduleData.News.id }}/{{ Core.moduleData.News.full_image }}"
+         name="{{ Core.moduleData.News.title }}">
+
+    <div class="contentLeftBlock">
+        <div class="contentTextBlock">
+            <h1>{{ Core.moduleData.News.title }}</h1>
+            {{ Core.moduleData.News.introtext }}
+
+            <form action="News/"><input type="submit" value="Назад"></form>
+        </div>
+    </div>
+{% else %}
+    <div class="contentLeftBlock">
+        <div class="contentTextBlock">
+            <h1>Новости</h1>
+            <table class="newsTab">
+                {% for id in Core.moduleData.NewsListing %}
+                <tr valign="top">
+                    <td style="padding:0px 0px 10px 0px">
+                        <a href="News/{{ id.translit_url }}/" class="newsTitle"><img src="uploads/News/{{ id.id }}/{{ id.thumb_image }}"
+                             name="{{ id.title }}"></a></td>
+                    <td style="padding:0px 10px">
+                        <a href="News/{{ id.translit_url }}/" class="newsTitle">{{ id.title }}</a>
+                        <div class="newsDate">{{ id.date|date('d.m.Y') }}</div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endif %}
+
+{% endautoescape %}

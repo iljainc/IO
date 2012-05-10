@@ -1,0 +1,48 @@
+{% extends "system/adm.html" %}
+
+
+{% block title %}Свойства{% endblock %}
+{% block H1 %}<h1>Свойства</h1>{% endblock %}
+{% block content %}
+    {% if Core.moduleData.AbsoluteStructure.PropertyListing %}
+        <form method="post">
+
+        <input type="submit" value="Сохранить">
+        
+        <table cellpadding="0" cellspacing="0" align="center" class="listingTable">
+        <tr>
+            <th width="40px">&nbsp;</th>
+            <th>Название</th>
+            <th>Позиция</th>
+            <th>Группа</th>
+            <th style="text-align:left">Удалить</th>
+        </tr>
+        {% for id in Core.moduleData.AbsoluteStructure.PropertyListing %}
+            {% if lastPcId != id.p_pc_id %}
+                <tr>
+                    <td colspan="5"><h2>{{ id.pc_name }}</h2></td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td>{{ id.p_id }}</td>
+                <td>{{ id.p_name }}</td>
+                <td><input value="{{ id.p_priority }}" class="int" name="newPosition{{ id.p_id }}" type="text"></td>
+                <td>
+                    <select name="newGroup{{ id.p_id }}">
+                        {% for insId in Core.moduleData.AbsoluteStructure.PropertyGroups %}
+                            <option value="{{ insId.pc_id }}" {% if insId.pc_id == id.p_pc_id %} selected{% endif %}>{{ insId.pc_name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><a href="adm/ASPropertyGroup/{{ id.pg_id }}/delete/">Удалить</a></td>
+            </tr>
+            {% set lastPcId = id.p_pc_id %}
+        {% endfor %}
+        </table>
+
+        <input type="submit" value="Сохранить">
+
+        </form>
+    {% endif %}
+{% endblock %}
+

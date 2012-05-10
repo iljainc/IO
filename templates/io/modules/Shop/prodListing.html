@@ -1,0 +1,16 @@
+{% autoescape false %}
+
+{% if Core.moduleData.shopCategory.category_thumb_image %}
+    <img src="uploads/Shop/Category/{{ Core.moduleData.shopCategory.category_id }}/Sourse/{{ Core.moduleData.shopCategory.category_thumb_image }}"
+         style="float:left;margin: 0px 40px 0px 0px" alt="{{ Core.moduleData.shopCategory.category_name }}">
+{% endif %}
+
+{% if Core.moduleData.shopCategory.category_description %}
+    <div class="contentLeftBlock">
+        <div class="contentTextBlock">
+        <h1>{{ Core.moduleData.shopCategory.category_name }}</h1>
+        {{ Core.moduleData.shopCategory.category_description }}
+    </div></div>
+{% endif %}
+
+{% endautoescape %}

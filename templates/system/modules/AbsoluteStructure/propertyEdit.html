@@ -1,0 +1,122 @@
+global $g_propertys_db;
+        global $g_propertys_db_change_type;
+        global $base;
+
+        $echo='';
+
+        $echo.='<form method="post"';
+        if(!empty($this->p_id))$echo.=' action="'.$base.'core/propertys/'.$this->p_id.'/"';
+        $echo.='><fieldset>
+                <legend><strong>';
+        if (empty($this->p_id))$echo.='Создание нового свойства';
+        else $echo.='Редактирование свойства &quot;'.$this->p_name.'&quot;';
+        $echo.='</strong></legend>
+
+                <label>Название: <br />
+                <input type="text" name="new_p_name" value="'.$this->p_name.'">
+                </label></p>
+
+                <label>MR название: <br />
+                <input type="text" name="new_p_mr_name" value="'.$this->p_mr_name.'">
+                </label></p>
+
+                <label>Тип: <br />';
+        if (!empty($this->p_type))$echo.='<input type="hidden" name="new_p_type" value="'.$this->p_type.'">';
+        $echo.='<select size="1" name="new_p_type"';
+        if (!empty($this->p_type))$echo.=' disabled';
+        $echo.='>';
+        $c=count($g_propertys_db);
+        for($i=1;$i<=$c;$i++){
+            $echo.='<option value="'.$i.'"';
+            if ($this->p_type==$i)$echo.=' selected';
+            $echo.='>'.$g_propertys_db[$i]["type_name"];
+        };
+        $echo.='</select>
+                </label></p>
+
+                <label>Группа: <br />
+                <select size="1" name="new_p_pg_id">';
+
+        $res=get_sql_result('SELECT * FROM propertys_group ORDER BY pg_priority',
+            '$Property->HTML_edit() Выбор группы свойств');
+        $num=mysql_num_rows($res);
+        for($i=0;$i<$num;$i++){
+            $row			=mysql_fetch_array($res);
+            $pg_id			=$row['pg_id'];
+            $pg_name			=$row['pg_name'];
+
+            $echo.='<option value="'.$pg_id.'"';
+            if ($this->p_pg_id==$pg_id)$echo.=' selected';
+            $echo.='>'.$pg_name;
+        };
+        $echo.='</select>
+                </label></p>
+
+                <label>Переменные обработки: <br />
+                <textarea rows="2" name="new_p_engine_values">'.$this->p_engine_values.'</textarea>
+                </label></p>';
+
+        $echo.='<label>Шаблон: <br />
+            <select size="1" name="new_p_t_id"><option value="0">';
+
+        $res=get_sql_result('SELECT t_id, t_name FROM templates ORDER BY t_priority',
+            '$Property->HTML_edit() Выбор templates');
+        $num=mysql_num_rows($res);
+        for($i=0;$i<$num;$i++){
+            $row			=mysql_fetch_array($res);
+
+            $echo.='<option value="'.$row['t_id'].'"';
+            if ($this->p_t_id==$row['t_id'])$echo.=' selected';
+            $echo.='>'.$row['t_name'];
+        };
+
+        $echo.='</select></label></p>';
+
+        $echo.='<p class="submit" style="clear:both"><input type="submit" value="';
+        if (empty($this->p_id))$echo.='Добавить';
+        else $echo.='Сохранить';
+        $echo.=' &raquo;" name="submit" /></p></form></fieldset>';
+
+        //----------------------------------------------------------------------
+        //Использование
+        $echo.='<form method="post"';
+        if(!empty($this->p_id))$echo.=' action="'.$base.'core/propertys/'.$this->p_id.'/"';
+        $echo.='>';
+
+        $echo.='<fieldset style="width:20%">
+                <legend><strong>Используеться в группах связи</strong></legend>';
+
+        $res=get_sql_result('SELECT * FROM link_property, tp_groups
+            WHERE lp_tpg_id=tpg_id AND lp_p_id=\''.$this->p_id.'\'',
+            '$Property->HTML_edit() Связи свойства');
+        $num=mysql_num_rows($res);
+        for($i=0;$i<$num;$i++){
+            if ($i==0)$echo.='<ol>';
+            $row			=mysql_fetch_array($res);
+            $echo.='<li><a href="'.$base.'core/tp_groups/'.$row['tpg_id'].'/">'.$row['tpg_name'].'</a>';
+            if ($i==($num-1))$echo.='</ol>';
+        };
+        $echo.='</fieldset>';
+
+        //----------------------------------------------------------------------
+        //Изменить тип
+        if(!empty($this->p_id) AND !empty($g_propertys_db_change_type[$this->p_type])){
+            $echo.='<form method="post" action="'.$base.'core/propertys/'.$this->p_id.'/">
+                <fieldset style="width:15%">
+                <legend>Изменить тип:</legend>
+                <label>Новый тип: <br />
+                <select name="set_new_type">';
+            if (isset($g_propertys_db_change_type[$this->p_type])){
+                reset($g_propertys_db_change_type[$this->p_type]);
+                while($e=each($g_propertys_db_change_type[$this->p_type])){
+                    $echo.='<option value="'.$e['key'].'">'.$g_propertys_db[$e['key']]["type_name"];
+                };
+            };
+            $echo.='</select></label></p>';
+
+            $echo.='<p class="submit" style="clear:both"><input type="submit" value="Изменить &raquo;"
+                name="submit" /></p>
+            </fieldset></form>';
+        };
+
+        return $echo;

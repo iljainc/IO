@@ -1,0 +1,42 @@
+{% block H1 %}{{ front.name }}{% endblock %}
+{% block title %}{{ front.name }}{% endblock %}
+<div id="ContentContRight">
+  <div class="ContentBlockHead">
+    <div class="ContentBlockHeadLeft">
+      {{ front.name }}
+    </div>
+  </div>
+  <div class="pages">
+    {% autoescape false %}
+    {{ front["Описание"] }}
+    {% endautoescape %}
+  </div>
+  <div class="pages">
+    {% autoescape false %}
+    {{ front["Сопутствующая информация"] }}
+    {% endautoescape %}
+  </div>
+  {% autoescape false %}
+  {% if Core.H1 and Core.getAction != '' %}
+  <H1>{{Core.H1}}</H1>
+  {% endif %}
+  {% block content %}
+  {% if Core.pages %}
+  <div class="pages">{{ forms.pages(Core) }}</div>
+  {% endif %}
+  {% if Core.contentTpl %}
+  {% include Core.contentTpl %}
+  {% endif %}
+  {{ Core.content }}
+  {% if Core.pages %}
+  <div class="pages">{{ forms.pages(Core) }}</div>
+  {% endif %}
+  {% endblock %}
+
+  {% endautoescape %}
+
+  {% if Core.pages %}
+  <div class="pages">{{ forms.pages(Core) }}</div>
+  {% endif %}
+</div>
+</div>

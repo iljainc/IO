@@ -1,0 +1,48 @@
+<form method="get" action="cart/3/" style="width:100%">
+<table class="cartTab" style="width:100%">
+    <tr>
+        <th style="width:450px">Фамилия Имя Отчество:</th>
+        <td>{{ _SESSION.cartFio }}</td>
+    </tr>
+    <tr>
+        <th>Электронная почта:</th>
+        <td>{{ _SESSION.cartMail }}</td>
+    </tr>
+    <tr>
+        <th>Телефоны (мобильный, домашний, рабочий):</th>
+        <td>{{ _SESSION.cartTel }}</td>
+    </tr>
+    <tr>
+        <th>Адрес (улица, дом, корпус, подъезд, код,
+этаж, квартира, офис):</th>
+        <td>{{ _SESSION.cartAdres }}</td>
+    </tr>
+    <tr>
+        <th>Дополнительная информация для курьера:</th>
+        <td>{{ _SESSION.cartComm }}</td>
+    </tr>
+    <tr>
+        <th>Дата доставки:</th>
+        {% set month = _SESSION.cartMonth %}
+        <td>{{ _SESSION.cartDay }} 
+            {% if _SESSION.cartMonth == 1 %}января{% endif%}
+            {% if _SESSION.cartMonth == 2 %}февраля{% endif%} 
+            {% if _SESSION.cartMonth == 3 %}марта{% endif%} 
+            {% if _SESSION.cartMonth == 4 %}апреля{% endif%} 
+            {% if _SESSION.cartMonth == 5 %}мая{% endif%} 
+            {% if _SESSION.cartMonth == 6 %}июня{% endif%} 
+            {% if _SESSION.cartMonth == 7 %}июля{% endif%} 
+            {% if _SESSION.cartMonth == 8 %}августа{% endif%} 
+            {% if _SESSION.cartMonth == 9 %}сентября{% endif%} 
+            {% if _SESSION.cartMonth == 10 %}октября{% endif%} 
+            {% if _SESSION.cartMonth == 11 %}ноября{% endif%} 
+            {% if _SESSION.cartMonth == 12 %}декабря{% endif%}
+
+        {{ _SESSION.cartYear }} с {{ _SESSION.cartFromHour }}:{{ _SESSION.cartFromMin }} до {{ _SESSION.cartToHour }}:{{ _SESSION.cartToMin }}
+        </td>
+    </tr>
+    <tr>
+        <th colspan="2"><input type="submit" value="Завершить оформления заказа"></th>
+    </tr>
+</table>
+</form>

@@ -1,0 +1,218 @@
+{% import "system/forms.html" as forms %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{% block title %}{{ Core.title }}{% endblock %}</title>
+<META name="ROBOTS" content="NOINDEX , NOFOLLOW "> 
+<base href="{{ Core.URL }}" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<link rel="stylesheet" href="templates/system/css/main.css" type="text/css"/>
+
+<script LANGUAGE="JavaScript" SRC="templates/system/js/jquery.min.js"></script>
+<script LANGUAGE="JavaScript" SRC="templates/system/js/function.js"></script>
+<script LANGUAGE="JavaScript" SRC="templates/system/js/ata.js"></script>
+
+<script LANGUAGE="JavaScript" SRC="templates/system/js/jquery-ui.min.js"></script>
+<script LANGUAGE="JavaScript" SRC="templates/system/js/jquery.ui.datepicker-ru.js"></script>
+
+<!-- плагин для кодировки в JSON -->
+<script LANGUAGE="JavaScript" SRC="templates/system/js/jquery.json.js"></script>
+
+<link rel="stylesheet" href="templates/system/js/jquery-ui-css-framework.css" type="text/css"/>
+
+<script type="text/javascript" src="/templates/system/js/nicEdit/nicEdit.js"></script>
+
+{% autoescape false %}
+    {{ Core.css }}
+{% endautoescape %}
+
+{% autoescape false %}
+    {% if Core.js %}
+        {{ Core.js }}
+    {% endif %}
+{% endautoescape %}
+
+</head>
+<body>
+
+<script>
+var globalBlackFont = '';
+
+function showBlackFont(id) {
+    if (id) globalBlackFont = id;
+
+    jQuery('#blackFont').css('z-index', '1000');
+    jQuery('#'+globalBlackFont).css('z-index', '1999');
+
+    CSSdisplay(globalBlackFont, '');
+    CSSdisplay('blackFont', '');
+}
+
+jQuery(document).ready(function(){
+    jQuery('#blackFont').click(function() {
+        showBlackFont(globalBlackFont);
+    });
+});
+</script>
+
+<div id="blackFont" style="position: fixed;width:100%;height:100%;background:url('/templates/system/img/logoBg.png');z-index: 1000;display:none"></div>
+
+<div class="mainBlock">
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td class="headerNavigation">
+        <a href="/">Перейти на сайт</a>
+        <a href="/?exit">Выйти</a>
+    </td>
+</tr>
+</table>
+
+<div class="topMenu">
+    <table cellpadding="0" cellspacing="0">
+    <tr>
+        <!-- Меню -->
+        {% for id in _MODULES|keys %}
+            {% if _MODULES[id].access.use.der or Core.user.access[id].use or Core.user.u_id == 1 %}
+                {% if _MODULES[id].name %}
+                    <td class="topMenuA"{% if Core.action==id %} id="topMenuSelected"{% endif %}><a href="adm/{{ id }}/">{{ _MODULES[id].name }}</a></td>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <!-- /Меню -->
+    </tr>
+    </table>
+</div>
+
+{% autoescape false %}
+
+<!-- topMenu -->
+{% if Core.menu.topMenu %}
+    <div class="subTopMenu">
+        {% for id in Core.menu.topMenu %}
+            {% if id.url %}
+                <a href="{{ id.url }}"{% if Core.getAction == id.derection or Core.getObj == id.derection %} class="selected"{% endif %}>{% endif %}{{ id.name }}{% if id.url %}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+<!-- /topMenu -->
+
+<!-- Содержание -->
+<table cellpadding="0" cellspacing="0" id="wrapper">
+<tr valign="top">
+    <td id="leftMenuTd">
+        <!-- Левое меню -->
+        {% if Core.HTMLLeftMenu or Core.menu.leftMenu or Core.searchForm %}
+            <div id="leftMenu">
+                {% if Core.searchForm %}
+                    <form action="/adm/{{ Core.getAction }}/">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td><input type="text" style="width:90%" name="search" value="{{ _GET.search }}"></td>
+                            <td><input type="submit" value="Найти"></td>
+                        </tr>
+                    </table>
+                    </form>
+                {% endif %}
+                
+                {{ Core.HTMLLeftMenu }}
+
+                {% include Core.leftMenuTpl %}
+
+                {% if Core.menu.leftMenu %}
+<script>
+    $(function() {
+        $( "#sortable" ).sortable({
+                items: "li:not(.noDrug)"
+        });
+    });
+</script>
+
+<script type = "text/javascript">
+    $(document).ready(function() {
+        $("#sortable").sortable({
+            stop: function(event, ui) {
+                arr = new Array();
+                //Проходим по порядку всех детей(после вызова события stop у нас в DOM уже измененный порядок)
+                $(this).children().each(function()
+                {
+                    arr.push(this.id); //и заносим в массив id текущего элемента
+                });
+
+                var encoded = $.toJSON( arr );
+
+                //post-запрос
+                $.post("adm/{{ Core.getAction }}/{{ Core.getObj }}/?ajax", {objSort: encoded}, function(data) { });
+            }
+        });
+    });
+</script>
+                    <ul id="sortable" type="none">
+                    {% for id in Core.menu.leftMenu %}
+                        <li class="level{{ id.level }}{% if id.drug is empty %} noDrug{% endif %}"{% if id.drug %} id="{{ id.id }}" drug="true"{% endif %}>
+                            {% if id.url %}<a{% if id.selected %} class="selected"{% endif %} href="{{ id.url }}">{% endif %}
+                                {{ id.name }}
+                            {% if id.url %}</a>{% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endif %}
+        <!-- /Левое меню -->
+
+    </td>
+    <td id="content">
+        <!-- contentMenu -->
+        {% if Core.menu.contentMenu %}
+            <div class="contentMenu">
+                {% for id in Core.menu.contentMenu %}
+                    {% if id.url %}
+                        <a href="{{ id.url }}"{% if id.select %} class="selected"{% endif %}>{% endif %}{{ id.name }}{% if id.url %}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <!-- /contentMenu -->
+        
+        {% if Core.navigation %}
+            <div class="navigation">{{Core.navigation}}</div>
+        {% endif %}
+
+        {% block H1 %}
+            {% if Core.H1 and Core.getAction != '' %}
+                <H1>{{Core.H1}}</H1>
+            {% endif %}
+        {% endblock %}
+        
+        {{ Core.error }}
+        {{ Core.message }}
+
+        {% block content %}
+            {% if Core.pages %}
+                <div class="pages">{{ forms.pages(Core) }}</div>
+            {% endif %}
+
+            {% if Core.contentTpl %}
+                {% include Core.contentTpl %}
+            {% endif %}
+
+            {{ Core.content }}
+
+            {% if Core.pages %}
+                <div class="pages">{{ forms.pages(Core) }}</div>
+            {% endif %}
+        {% endblock %}
+    </td>
+</tr>
+</table>
+<!-- /Содержание -->
+</div>
+{% endautoescape %}
+
+<div class="bottom">
+    Copyright © 2010 - {{ Core.date|date('Y') }} Powered by JD CMS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="http://jonydi.ru/" target="_blanck" style="padding:10px;background:#ffff00;color:#000">JonyDi</a>
+</div>

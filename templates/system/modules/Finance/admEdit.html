@@ -1,0 +1,101 @@
+
+{% if Core.moduleData.Finance.userData %}
+    Баланс: {{ Core.moduleData.Finance.userData.total }} руб.
+    <form method="post">
+    <table cellpadding="5" cellspacing="0">
+    <tr>
+        <tr>
+            <th></td>
+            <th width="100px">Сумма</th>
+            <th>Коментарии</th>
+            <th width="100px"></td>
+        </tr>
+        <tr>
+            <th>Добавить деньги на счет: </th>
+            <td><input type="text" value="" name="addSum"></td>
+            <td><input type="text" value="" name="addComm"></td>
+            <td><input type="submit" value="Добавить"></td>
+        </tr>
+    </table>
+    </form>        
+    
+    {% if Core.moduleData.Finance.userData.cashFlows %}
+        <table cellpadding="0" cellspacing="0" class="listingTable">
+        <tr>
+            <th style="width:150px">Дата</th>
+            <th style="width:100px">Операция</th>
+            <th style="width:100px">Сумма, руб.</th>
+            <th style="width:100px">Остаток, руб.</th>
+            <th>Коментарии</th>
+        </tr>
+            {% for id in Core.moduleData.Finance.userData.cashFlows %}
+                <tr>
+                    <td><span class="date">{{ id.date|date('d.m.Y H:i:s') }}</span></td>
+                    <td>{% if id.sum > 0 %}Платеж{% else %}Списание{% endif %}</td>
+                    <td>{{ id.sum }}</td>
+                    <td>{{ id.ost }}</td>
+                    <td>{{ id.comm }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% else %}
+
+    <script>
+        $(function(){
+            $.datepicker.setDefaults($.datepicker.regional['ru']);
+
+            $("#datepickerFrom").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd.mm.yy',
+                maxDate: ('{{ Core.date|date('d.m.Y') }}'),
+                defaultDate: {{ _SESSION.fromDate }}
+            });
+
+            $("#datepickerTo").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd.mm.yy',
+                maxDate: ('{{ Core.date|date('d.m.Y') }}'),
+                defaultDate: {{ _SESSION.toDate }}
+            });
+        });
+    </script>
+
+    <form method="get">
+        <input id="datepickerFrom" class="datepicker" style="text-align:center;width:100px" type="text" name="fromDate" value="{{  _SESSION.fromDate|date('d.m.Y') }}">
+
+        <input id="datepickerTo" class="datepicker" style="text-align:center;width:100px" type="text" name="toDate" value="{{  _SESSION.toDate|date('d.m.Y') }}">
+
+        <input type="submit" value="Поиск">
+    </form>
+
+    {% if Core.moduleData.Finance.searchRes %}
+        <P>
+        {% if Core.moduleData.Finance.totalSum %}
+            Поступило: {{ Core.moduleData.Finance.totalSum }} руб.
+        {% endif %}
+
+        {% if Core.moduleData.Finance.totalSpending %}
+            Израсходовано: {{ Core.moduleData.Finance.totalSpending }} руб.
+        {% endif %}
+
+
+
+        <table cellpadding="0" cellspacing="0" class="listingTable">
+            <tr><th></th><th>Почта</th><th>Дата</th><th>Поступило</th><th>Комментарии</th></tr>
+        {% for id in Core.moduleData.Finance.searchRes %}
+            <tr>
+                <td>{{ loop.index }}. </td>
+                <td><a href="adm/Finance/{{ id.u_id }}/">{{ id.u_mail }}</a></td>
+                <td><span class="date">{{ id.date|date('H:i d.m.y') }}</span></td>
+                <td>{{ id.totalSum }}</td>
+                <td>{{ id.comm }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <P>Ничего не найдено
+    {% endif %}
+{% endif %}

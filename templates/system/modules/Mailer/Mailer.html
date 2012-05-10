@@ -1,0 +1,36 @@
+{% extends "system/adm.html" %}
+
+{% block H1 %}Рассылки{% endblock %}
+{% block title %}Рассылки{% endblock %}
+{% block content %}
+
+{% autoescape false %}
+
+<form method="post">
+<table class="table">
+    <tr>
+        <td>Тема</td>
+        <td><input type="text" name="sub" value="{{ _POST.sub }}"></td>
+    </tr>
+    <tr>
+        <td>Сообщение</td>
+        <td><textarea cols="90" rows="6" name="content">{{ _POST.content }}</textarea></td>
+    </tr>
+    <tr>
+        <td>Получатель</td>
+        <td>
+            <input type="radio" name="send_to" value="1"> Тестовая рассылка
+            <input type="radio" name="send_to" value="2"> Разослать пользователям
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <input type="submit" value="Запустить рассылку">
+        </td>
+    </tr>
+</table>
+</form>
+{% endautoescape %}
+
+{% endblock %}

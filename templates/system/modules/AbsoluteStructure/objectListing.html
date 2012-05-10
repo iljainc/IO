@@ -1,0 +1,25 @@
+{% extends Core.moduleData.AbsoluteStructure.mainTpl %}
+
+{% set listing = Core.moduleData.AbsoluteStructure.listing %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block H1 %}
+    <h1>Листинг</h1>
+{% endblock %}
+
+{% block content %}
+    <table class="listingTable" cellpadding="0" cellspacing="0">
+        <tr><th>ID</th>
+            <th>Название</th>
+            <th></th>
+        </tr>
+
+        {% for id in listing %}
+            <tr>
+                <td>{{ id.o_id }}</td>
+                <td><a href="adm/ASShop/{{ id.o_id }}/">{{ id.o_name }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

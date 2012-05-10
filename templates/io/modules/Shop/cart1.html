@@ -1,0 +1,81 @@
+<form method="post" action="cart/2/" style="width:100%">
+<input type="hidden" value="1" name="saveUserData">
+<table class="cartTab" style="width:100%">
+    <tr>
+        <th style="width:450px">Фамилия Имя Отчество:</th>
+        <td><input type="text" name="cartFio" value="{{ _SESSION.cartFio }}"></td>
+    </tr>
+    <tr>
+        <th>Электронная почта:</th>
+        <td><input type="text" name="cartMail" value="{{ _SESSION.cartMail }}"></td>
+    </tr>
+    <tr>
+        <th>Телефоны (мобильный, домашний, рабочий):</th>
+        <td><input type="text" name="cartTel" value="{{ _SESSION.cartTel }}"></td>
+    </tr>
+    <tr>
+        <th>Адрес (улица, дом, корпус, подъезд, код,
+этаж, квартира, офис):</th>
+        <td><input type="text" name="cartAdres" value="{{ _SESSION.cartAdres }}"></td>
+    </tr>
+    <tr>
+        <th>Дополнительная информация для курьера:</th>
+        <td><input type="text" name="cartComm" value="{{ _SESSION.cartComm }}"></td>
+    </tr>
+    <tr>
+        <th>Дата доставки:</th>
+        <td>
+            <select name="cartDay">
+            {% for i in 1..31 %}
+               <option value="{{ i }}"{% if _SESSION.cartDay==i %} selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+            </select>
+
+            <select name="cartMonth">
+            {% for i in 1..12 %}
+                <option value="{{ i }}"{% if _SESSION.cartMonth==i %} selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+            </select>
+            
+            <select name="cartYear">
+            {% for i in 0..1 %}
+                {% set year = "now"|date("Y")+i %}
+                <option value="{{ year }}"{% if _SESSION.cartYear==year %} selected{% endif %}>{{ year }}</option>
+            {% endfor %}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>Время доставки:</th>
+        <td>с:
+            <select name="cartFromHour">
+            {% for i in 9..22 %}
+                <option value="{{ i }}"{% if _SESSION.cartFromHour==i %} selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+            </select>
+
+            <select name="cartFromMin">
+            {% for i in range(0, 60, 15) %}
+                <option value="{{ i }}"{% if _SESSION.cartFromMin==i %} selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+            </select>
+
+            до:
+            <select name="cartToHour">
+            {% for i in 10..23 %}
+                <option value="{{ i }}"{% if _SESSION.cartToHour==i %} selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+            </select>
+
+            <select name="cartToMin">
+            {% for i in range(0, 60, 15) %}
+                <option value="{{ i }}"{% if _SESSION.cartToMin==i %} selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th colspan="2"><input type="submit" value="Продолжить оформления заказа"></th>
+    </tr>
+</table>
+</form>

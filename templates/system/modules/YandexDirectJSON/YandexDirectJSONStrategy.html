@@ -1,0 +1,163 @@
+<style>
+    .varTabs th, .varTabs td {text-align: left;padding:2px 5px}
+    .varTabs th {color:#f40c43;font-weight: bold}
+</style>
+
+
+{% if Core.getObj == '' %}
+    <form action="adm/YandexDirectJSONStrategy/add/">
+        <div class="saveDiv" style="padding-left:38px"><input type="submit" value="Добавить стратегию"></div>
+    </form>
+
+    {% if Core.moduleData.YandexDirectJSON.userStrategy %}
+    <form action="adm/YandexDirectJSONStrategy/" method="post" id="deleteForm">
+        <table cellpadding="0" cellspacing="0" align="center" class="listingTable">
+        <tr>
+            <th></th>
+            <th style="padding-left:0px">Название</th>
+            <th>Функция</th>
+            <th style="text-align:left">Редактирование</th>
+        </tr>
+        {% for id in Core.moduleData.YandexDirectJSON.userStrategy %}
+            <tr>
+                <td style="width:10px;text-align: center;padding:10px 0px 10px 10px"><input type="checkbox" name="delete{{ id.yds_id }}" value="true"></td>
+                <td style="padding-left:0px">{{ id.yds_name }}</td>
+                <td><code>{{ id.yds_function }}</code></td>
+                <td style="text-align:right"><a href="adm/YandexDirectJSONStrategy/{{ id.yds_id }}/">Редактировать стратегию</a></td>
+            </tr>
+        {% endfor %}
+        </table>
+        <input type="hidden" name="doDelete" value="true">
+        <input type="submit" style="margin-left: 20px" id="deleteButton" disabled value="Удалить">
+        </form>
+    {% endif %}
+    <script>
+    var checkRes = false;
+
+    jQuery('#deleteForm').submit(function() {
+        if (checkRes == true) return true;
+
+        if (confirm('Вы уверены, что хотите удалить?')){
+            checkRes = true;
+            jQuery('#deleteForm').submit();
+        };
+
+        return false;
+    });
+
+    jQuery('#deleteButton').attr('disabled', false);
+
+    </script>
+{% else %}
+
+    <p>Обращаем ваше внимание - неверно созданная стратегия может серьезно повлиять на ваши расходы в Яндекс.Директ.
+        Будьте предельны осторожны и внимательны. В случае возникновения любых вопросов - обращайтесь к нам.</P>
+
+    <form method="post"  action="adm/YandexDirectJSONStrategy/" id="editForm">
+        <input type="hidden" name="saveDerection" value="{% if Core.moduleData.YandexDirectJSON.yds_id != '' %}{{ Core.moduleData.YandexDirectJSON.yds_id }}{% else %}add{% endif %}">
+
+        <table align="left" cellpadding="0" cellspacing="0">
+        <tr>
+            <th style="width: 200px;min-width: 200px;max-width: 200px;text-align: right;padding:2px">Название:</th>
+            <th style="padding:2px;width:304px;text-align: left;"><input type="text" style="width: 300px;min-width: 300px;max-width: 300px" id="name"
+                                                       name="upName" value="{{ Core.moduleData.YandexDirectJSON.yds_name }}"></th>
+            <td><div class="fieldError" id="fieldErrorName" style="display:none"></div></td>
+        </tr><tr>
+            <th style="text-align: right;padding:2px">Формула:</th>
+            <td style="padding:2px"><input type="text" id="formula" style="width: 300px;min-width: 300px;max-width: 300px"
+                                           name="upFunction" value="{{ Core.moduleData.YandexDirectJSON.yds_function }}"></td>
+            <td><div class="fieldError" id="fieldErrorFormula" style="display:none"></div></td>
+        </tr>
+        </table>
+        <table align="center" cellpadding="0" cellspacing="0" style="clear: both">
+        <tr valign="top">
+            <td style="padding:15px 0px 5px 0px" colspan="3">
+                Разрешенные символы: <b class="red">( ) + - / *</b>, дробные числа надо писать с точкой (например - <b class="red">0.98</b>).
+            </td>
+        </tr>
+        <tr valign="top">
+            <td style="padding:2px 0px">Доступны следующие переменные:</td>
+            <td style="padding:2px 0px" colspan="2">
+                <table align="left" class="varTabs" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th style="text-align:right">1С</th>
+                    <td>1-е спецразмещение</td>
+                </tr>
+                <tr>
+                    <th style="text-align:right">2С</th>
+                    <td>2-е спецразмещение</td>
+                </tr>
+                <tr>
+                    <th style="text-align:right">3С</th>
+                    <td>Вход в спецразмещение</td>
+                </tr>
+                <tr>
+                    <th style="text-align:right">1М</th>
+                    <td>1-е место</td>
+                </tr>
+                <tr>
+                    <th style="text-align:right">ГП</th>
+                    <td>Вход в гарантированные показы</td>
+                </tr>
+                <tr valign="top">
+                    <th style="text-align:right;width:50px">ОА(X%)</th>
+                    <td>Охват аудитории. Замените переменную X на необходимый Вам процент. Например Вы хотите задать охват аудитории
+                        равный 50%, формула будет выглядеть следующим образом <code>ОА(50%)</code>.</td>
+                </tr>
+                </table>
+            </td>
+        </tr>
+        </table>
+
+        <div class="saveDiv" style="margin-top:20px;padding-left:203px">
+                <input style="margin-right: 20px" disabled type="submit" id="saveButton" value="Сохранить">
+                <input type="button" onclick="self.location.href='adm/YandexDirectJSONStrategy/'" value="Отменить">
+        </div>
+    </form>
+<script>
+var checkRes = false;
+
+jQuery('#editForm').submit(function() {
+    returnVar = true;
+
+    if (jQuery('#name').val() == '') {
+        jQuery('#fieldErrorName').html('Заполните обязательное поле');
+        jQuery('#fieldErrorName').css('display', 'block');
+        returnVar = false;
+    } else {
+        jQuery('#fieldErrorName').css('display', 'none');
+    }
+
+    if (jQuery('#formula').val() == '') {
+        jQuery('#fieldErrorFormula').html('Заполните обязательное поле');
+        jQuery('#fieldErrorFormula').css('display', 'block');
+        returnVar = false;
+    } else {
+        jQuery('#fieldErrorFormula').css('display', 'none');
+    }
+
+    val = jQuery('#formula').val();
+
+    if (returnVar == false) return false;
+
+    if (checkRes == true) return true;
+
+    $.ajax({
+        url: 'YandexDirectJSONStrategy/checkFormula/?formula='+val+'&ajax=true',
+        success: function(data) {
+            if (data == '') {
+                checkRes = true;
+                jQuery('#editForm').submit();
+            } else {
+                alert (data);
+            }
+        }
+    });
+
+    return false;
+});
+
+jQuery('#saveButton').attr('disabled', false);
+
+</script>
+{% endif %}

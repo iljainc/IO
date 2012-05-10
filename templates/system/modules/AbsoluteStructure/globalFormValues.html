@@ -1,0 +1,102 @@
+
+{% set formData = Core.moduleData.AbsoluteStructure.structure %}
+{% set property = Core.moduleData.AbsoluteStructure.propertys %}
+
+{# Только созданные объекты имееют свойства #}
+{% if formData.o_id.value %}
+<script>
+jQuery(document).ready(function(){
+    $('textarea').ata();
+});
+</script>
+    {% for pcId in Core.moduleData.AbsoluteStructure.propertysCluster|keys %}
+        {% set pcRow = Core.moduleData.AbsoluteStructure.propertysCluster[pcId] %}
+
+        {% if pcRow.pc_engine_values.admHTMLTr is empty %}
+            <tr>
+                <td colspan="2"><h2>{{ pcRow.pc_name }}</h2></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td></td><td>
+                    <table><tr valign="top">
+        {% endif %}
+
+        {% for pId in pcRow.p_idArr %}
+            {% set pRow = property[pId] %}
+
+            {% if pcRow.pc_engine_values.admHTMLTr is empty %}
+                <tr>
+                    <th>{{ pRow.p_name }}: </th>
+                    <td>
+            {% else %}
+                <td>
+                    <p><b>{{ pRow.p_name }}:</b></p>
+            {% endif %}
+            
+            {% autoescape false %}
+
+            {% set pType = pRow.p_type %}
+
+            {% if pRow.p_engine_values.extendedSelect %}
+                {% if pType == 3 or pType == 1 %}{# int #}
+                    {# Неограничееное кол-во значений сво-в extendedSelect - checkbox #}
+                    {% for key in pRow.p_engine_values.extendedSelect|keys %}
+                        {% set tr = loop.length/4 %}
+                        <div class="extendedSelect">
+                            <input type="checkbox" name="edit_{{ pId }}_{{ key }}" value="true" {% if pRow.p_engine_values.extendedSelect[key].v_id %}checked{% endif %}>
+                            {{ pRow.p_engine_values.extendedSelect[key].value }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {# Стандартный вывод #}
+            {% else %}
+                {# Мультизначения #}
+                {% if pRow.p_engine_values.multiValued %}
+                    <table><tr>
+                    <TH>Позиция</TH>
+                    {% for key in pRow.p_engine_values.multiValued|keys %}
+                        <th>{{ pRow.p_engine_values.multiValued[key].name }}</th>
+                    {% endfor %}
+                    </tr>
+                {% endif %}
+                
+                {# Новые значения #}
+                {% if pRow.lp_arr == 0 or pRow.value|length < pRow.lp_arr %}
+                    {{ forms.standartObjectFormValueRow(Core, pRow, pId, '', '') }}
+                {% endif %}
+
+                {# Существующие значения #}
+                {% if pRow.value %}
+                    {% for vId in pRow.value|keys %}
+                        {% set vRow = property[pId].value[vId] %}
+
+                        {{ forms.standartObjectFormValueRow(Core, pRow, pId, vRow, vId) }}
+                    {% endfor %}
+                {% endif %}
+
+                {# Мультизначения #}
+                {% if pRow.p_engine_values.multiValued %}</table>{% endif %}
+            {% endif %}
+
+            {% if pRow.lp_input_comm %}
+                <div class="comm">{{ pRow.lp_input_comm }}</div>
+            {% endif %}
+
+            {% endautoescape %}
+
+            {% if pcRow.pc_engine_values.admHTMLTr is empty %}
+                    </td>
+                </tr>
+            {% else %}
+                </td>
+            {% endif %}
+        {% endfor %}
+
+        {% if pcRow.pc_engine_values.admHTMLTr is empty %}{% else %}
+                    </tr></table>
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+{% endif %}

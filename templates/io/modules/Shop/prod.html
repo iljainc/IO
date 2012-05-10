@@ -1,0 +1,156 @@
+<script>
+var imgArr = Array();
+var imgArrCount = 0;
+
+function showImg(fName, derectory) {
+    jQuery('.prodImg').css('display', 'none');
+    jQuery('.prodImg[name='+fName+']').css('display', 'block');
+    
+    jQuery('div[name=goodsParts] .aBoxs a').removeClass('boxSelected');
+    jQuery('div[name=goodsParts] .aBoxs a').addClass('prodBox');
+    jQuery('div[name=goodsParts] .aBoxs a[name='+fName+']').addClass('boxSelected')
+
+    jQuery('.colorSelectViaImg .aBoxs a').removeClass('selected');
+    jQuery('.colorSelectViaImg .aBoxs a[name='+fName+']').addClass('selected')
+}
+
+function showNextImg(num) {
+    if (num+1 == imgArr.length) num = 0;
+    
+    fName = imgArr[num+1];
+
+    showImg(fName, '');
+}
+</script>
+
+<style>
+    .colorSelectViaImg a {border:1px solid #2a2b2e}
+    .colorSelectViaImg .selected {border:1px solid #fff}
+</style>
+
+{% autoescape false %}
+
+<script>
+    imgPath = 'uploads/Shop/Goods/{{ Core.moduleData.shopProduct.product_id }}/Full/';
+</script>
+
+{% for typeId in Core.moduleData.shopProduct.imgData|keys %}
+    {% for id in Core.moduleData.shopProduct.imgData[typeId] %}
+        <a href="javascript:showGalery('{{ id }}', '')"><img
+            {% if Core.moduleData.shopProduct.product_full_image != id %} style="display:none"{% endif %}
+            class="prodImg" src="uploads/Shop/Goods/{{ Core.moduleData.shopProduct.product_id }}/Preview/{{ id }}" name="{{ id }}"></a>
+    {% endfor %}
+{% endfor %}
+
+{% if Core.moduleData.shopProduct.product_name %}
+    <div class="contentLeftBlock">
+        <div class="contentTextBlock">
+            <h1>{{ Core.moduleData.shopProduct.product_name }}</h1>
+            {{ Core.moduleData.shopProduct.product_desc }}
+        </div>
+
+        <!--
+        {% if Core.moduleData.shopProduct.product_colors %}
+            <hr>
+            <div class="contentTextBlock"><h2>Цветовая гамма</h2>
+                <div style="height:15px">
+                {% for id in Core.moduleData.shopProduct.product_colors|keys %}
+                    <a style="background:{{ id }};height:15px;width:15px;display:block;float:left;margin:3px"
+                       alt="{{ Core.moduleData.shopProduct.colors[id].name }}"
+                       title="{{ Core.moduleData.shopProduct.colors[id].name }}"></a>
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        
+        {% if Core.moduleData.shopProduct.imgTypesArr.goods.num %}
+            <hr>
+            <div class="contentTextBlock" name="goods"><h2>Фото</h2>
+                <div style="height:15px" class="aBoxs">
+                {% for id in Core.moduleData.shopProduct.imgData.goods %}
+                    <a{% if loop.index == 1 %} class="boxSelected"{% else %} class="prodBox"{% endif %}
+                       href="javascript:showImg('{{ id }}', 'goods')" name="{{ id }}">{{ loop.index }}</a>
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        -->
+        
+        {% if Core.moduleData.shopProduct.systemVars.imgTypesColors %}
+            <hr>
+            <div class="colorSelectViaImg">
+            <div class="contentTextBlock" name="goodsViaColors"><h2>Цветовая гамма</h2>
+                <div style="height:15px" class="aBoxs">
+                {% for id in Core.moduleData.shopProduct.systemVars.colors|keys %}
+                    {% if Core.moduleData.shopProduct.imgData[id] %}
+                         <a
+                         {% if Core.moduleData.shopProduct.product_full_image == Core.moduleData.shopProduct.imgData[id].0 %} class="selected"{% endif %}
+                            style="background:#{{ id }};height:15px;width:15px;display:block;float:left;margin:3px"
+                            alt="{{ Core.moduleData.shopProduct.colors[id] }}"
+                            title="{{ Core.moduleData.shopProduct.colors[id] }}"
+                            href="javascript:showImg('{{ Core.moduleData.shopProduct.imgData[id].0 }}', 'goodsViaColors')"
+                            name="{{ Core.moduleData.shopProduct.imgData[id].0 }}">
+                         </a>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+            </div>
+        {% endif %}
+
+        {% if Core.moduleData.shopProduct.imgTypesArr.goods.num %}
+            <hr>
+            <div class="contentTextBlock" name="goodsParts"><h2>Фото</h2>
+                <div style="height:15px" class="aBoxs">
+                {% for id in Core.moduleData.shopProduct.imgData.goods %}
+                    <a href="javascript:showImg('{{ id }}', 'goodsParts')" name="{{ id }}"
+                     {% if Core.moduleData.shopProduct.product_full_image == id %} class="boxSelected"{% else %} class="prodBox"{% endif %}
+                     >{{ loop.index }}</a>
+                    <script>
+                        imgArr[imgArrCount] = '{{ id }}';
+                        imgArrCount++;
+                    </script>
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        
+        {% if Core.moduleData.shopProduct.imgTypesArr.goodsParts.num %}
+            <hr>
+            <div class="contentTextBlock" name="goodsParts"><h2>Детали</h2>
+                <div style="height:15px" class="aBoxs">
+                {% for id in Core.moduleData.shopProduct.imgData.goodsParts %}
+                    <a class="prodBox" href="javascript:showImg('{{ id }}', 'goodsParts')" name="{{ id }}">{{ loop.index }}</a>
+
+                    <script>
+                        imgArr[imgArrCount] = '{{ id }}';
+                        imgArrCount++;
+                    </script>
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <hr>
+            <div style="height:15px" class="contentTextBlock">
+        {% for id in Core.moduleData.shopProduct.imgData.pdfCatalogData %}
+                <a style="float:left;margin:0px 10px 0px 0px" href="uploads/Shop/Goods/{{ Core.moduleData.shopProduct.product_id }}/Files/{{ id }}" target="_blank">
+                    <img src="/templates/obeton/img/settings.png" title="Техническая информация">
+                </a>
+        {% endfor %}
+        {% for id in Core.moduleData.shopProduct.imgData.pdfCatalogData %}
+                <a style="float:left;margin:0px 10px 0px 0px" href="uploads/Shop/Goods/{{ Core.moduleData.shopProduct.product_id }}/Files/{{ id }}" target="_blank">
+                    <img src="/templates/obeton/img/pdf.png" title="Техническая информация">
+                </a>
+        {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+{% endautoescape %}
+
+
+
+
+
+
+

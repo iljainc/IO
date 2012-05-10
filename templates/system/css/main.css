@@ -1,0 +1,106 @@
+body {margin: 0px 0px;font-size: 10pt;font-family: Arial, Verdana;background: url('/templates/system/img/topBg.png') repeat-x ;}
+
+a {color: #0066CC}
+img {border:0px}
+h1 {margin: 0px;padding:10px 0px;color:#343434;font-size: 14pt;font-weight: normal}
+h3 {margin: 0px; padding: 0px}
+.error {color: red}
+
+a.selected {color:#fff;background:#3398b1;}
+
+.mainBlock {margin: 0px 40px}
+
+#content {padding:0px 0px 0px 0px}
+
+.comm {color:grey;font-size: 80%}
+
+.bottom{background:#000;padding:40px 20px;color:#fff;text-align: right}
+
+.headerNavigation {padding:10px 0px;text-align: right}
+.headerNavigation a {margin:0px 0px 0px 25px}
+
+.debuging{background:#212121;color:#fff;padding:20px;}
+.debuging td {background:#212121;color:#fff;font-size: 10pt}
+
+/* topMenu ------------------------------------------------------------ */
+.topMenu {background:#e7e7e7;padding:10px 10px;}
+.topMenu td {padding:0px;}
+.topMenu a {color:#000;font-size: 12pt;padding:5px 20px}
+.topMenu #topMenuSelected a {color:#fff;background:#3398b1;}
+/* /topMenu ----------------------------------------------------------- */
+
+/* subTopMenu --------------------------------------------------------- */
+.subTopMenu {background:#e7e7e7;padding:10px 10px;}
+.subTopMenu a {color:#000;font-size: 11pt;padding:5px 20px}
+/* /subTopMenu -------------------------------------------------------- */
+
+/* contentMenu --------------------------------------------------------- */
+.contentMenu {background:#e7e7e7;padding:10px 10px; height: 20px}
+.contentMenu a {float: left; color:#000;font-size: 11pt;padding:2px 20px}
+.contentMenu img {float: left; margin-right: 5px ;position: relative; top: -3px}
+/* /contentMenu -------------------------------------------------------- */
+
+.saveDiv {padding:8px 100px 5px 100px;background:#e7e7e7}
+
+#wrapper {margin:10px 0px;width:100%;}
+
+.navigation {margin:0px 0px;padding:0px 0px;clear:both;display: table;}
+.navigation a {color:#777;font-size: 11pt;padding:5px 10px 5px 0px;vertical-align: middle;display: table-cell;}
+
+#leftMenuTd {width:260px;padding: 0px 10px 0px 0px}
+#leftMenu {padding:8px;background:#e7e7e7;width:250px}
+
+h2{font-size: 12pt}
+
+#leftMenu .level1                   {font-size:10pt;margin:12px 0px; text-indent: 0px;}
+#leftMenu .level1[drug=true]        {display: block; padding: 0px 0px 0px 20px; cursor: pointer; background: url('/templates/system/img/drag.png') no-repeat}
+#leftMenu .level2, #leftMenu h2     {font-size:12pt;margin:5px 0px 3px 0px;color:#555}
+#leftMenu .level3                   {font-size:10pt;margin:0px 0px 0px 10px}
+#leftMenu #leftMenuSpecLinks        { }
+#leftMenu #leftMenuSpecLinks a      { padding: 4px 0px; display: block }
+
+ul#sortable { list-style: none;padding: 0px; margin: 0px}
+ul#sortable li {padding: 0px; margin: 0px}
+
+/* Edit Table ------------------------------------------------------------ */
+.table {margin:10px 0px}
+.table, form {    width:100%;}
+.table th , .table td {text-align:left;font-size:11pt;font-weight: normal;padding:3px 0px 3px 0px;}
+.table th {white-space: pre;width:100px}
+.table input[type=text], .table textarea {width:99%;}
+.table input.date {width:100px;min-width: 100px}
+/* /Edit Table ----------------------------------------------------------- */
+
+/* Listang Table ------------------------------------------------------------ */
+.listingTable {width: 100%;margin:10px 0px}
+.listingTable th {padding:10px 0px;font-weight: normal;font-size: 10pt;border-bottom:#d3d3d3 1px solid;text-align: left}
+.listingTable td {padding:10px 0px;font-size: 10pt;border-bottom: 1px solid #f1eef5}
+.listingTable .int {width:50px;text-align: center}
+/* /Listang Table ----------------------------------------------------------- */
+
+input.date {width:100px;text-align:center}
+input.uploadFileUrl {width:300px;text-align:center}
+
+.del {position:relative;top:3px;left:20px}
+.date {color:green}
+
+/* Всплывающее сообщение ----------------------------------------------------------*/
+.showBlackFontGield {display:none;position: fixed;background: #fff;left:50%;padding:30px 30px;top:50%;}
+.showBlackFontGield .delImg {position:absolute;top:10px;right:10px}
+/* /Всплывающее сообщение ---------------------------------------------------------*/
+
+/* Листинг картинок ----------------------------------------------------------*/
+#sortableFoto { list-style: none;padding: 0px; margin: 0px}
+.imgListingBlockFull {background: #fff;float:left;position: relative;margin:5px 10px 10px 0px;text-align: center;width:90px;min-width: 90px;}
+.imgListingBlock {background: #fff;padding:2px;border: 1px solid #000;margin:0px 0px 5px 0px;float:left;position: relative;text-align: center;height:84px;min-height: 84px;width:84px;min-width: 84px;}
+/* /Листинг картинок ---------------------------------------------------------*/
+
+a.noPublish {color:grey}
+
+/* Редактирование товаров --------------------------------------------------- */
+.extendedSelect {padding: 0px 0px 5px 0px}
+/* / Редактирование товаров ------------------------------------------------- */
+
+/* Добавление товаров --------------------------------------------------- */
+#addName {margin-bottom: 10px};
+/* / Добавление товаров ------------------------------------------------- */

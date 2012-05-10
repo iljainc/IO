@@ -1,0 +1,21 @@
+{% extends "system/adm.html" %}
+
+{% autoescape false %}
+{% if Core.moduleData.AbsoluteStructure.PropertyGroupStructure.pg_id.value %}
+    {% set title = "Редактировать группу свойств «" ~ Core.moduleData.AbsoluteStructure.PropertyGroupStructure.pg_name.value ~ "»" %}
+    {% set submitValue = 'Сохранить' %}
+{% else %}
+    {% set title = 'Добавить группу свойств' %}
+    {% set submitValue = 'Добавить' %}
+{% endif %}
+{% endautoescape %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block H1 %}<h1><a href="adm/ASPropertyGroup/{% if Core.moduleData.AbsoluteStructure.PropertyGroupStructure.pg_id.value %}{{ Core.moduleData.AbsoluteStructure.PropertyGroupStructure.pg_id.value }}{% else %}add{% endif %}">{{ title }}</a></h1>{% endblock %}
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+    <input type="Hidden" name="MAX_FILE_SIZE" value="8388608"
+      action="adm/ASPropertyGroup/{% if Core.moduleData.AbsoluteStructure.PropertyGroupStructure.pg_id.value %}{{ Core.moduleData.AbsoluteStructure.PropertyGroupStructure.pg_id.value }}{% else %}add{% endif %}">
+        {{ forms.standartForm(Core.moduleData.AbsoluteStructure.PropertyGroupStructure, submitValue) }}
+    </form>
+{% endblock %}

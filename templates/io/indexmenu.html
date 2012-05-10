@@ -1,0 +1,125 @@
+{% block H1 %}{{ front.name }}{% endblock %}
+{% block title %}{{ front.name }}{% endblock %}
+<div id="BigLogo">
+  <div class="LogoTop">
+    <div class="LogoLeft">
+      <div class="ltr">
+        <div class="ltd1 linkone" style="background-image: url('/templates/obeton/img/image-1.jpg');">
+          <a href="/Goods/beton/"><p class="bigp">Товарный бетон высшего качества от производителя</p><p class="smallp">подробнее</p></a>
+        </div>
+        <div class="ltd1 link" style="background-image: url('/templates/obeton/img/image-2.jpg');">
+          <a href="/Goods/svai"><p class="bigp">Сваи железобетонные от производителя</p><p class="smallp">подробнее</p></a>
+        </div>
+        <div class="ltd3 link" style="background-image: url('/templates/obeton/img/image-3.jpg');">
+          <a href="/Goods/shcheben_pesok/"><p class="bigp">Щебень и песок высшего качества от компании «ШТАРКОМ»</p><p class="smallp">подробнее</p></a>
+        </div>
+      </div>
+      <div class="ltr">
+       <div class="ltd1 link" style="background-image: url('/templates/obeton/img/image-4.jpg');">
+          <a href="/Goods/bloki_stenovie/"><p class="bigp">Качественные стеновые блоки «Штарком»</p><p class="smallp">подробнее</p></a>
+        </div>
+        <div class="ltd1 link" style="background-image: url('/templates/obeton/img/image-5.jpg');">
+          <a href="/Goods/fbs/"><p class="bigp">Фундаментные блоки (ФБС) от производителя</p><p class="smallp">подробнее</p></a>
+        </div>
+        <div class="ltd3 link" style="background-image: url('/templates/obeton/img/image-6.jpg');">
+          <a href="/Goods/dorozhnye_plity/"><p class="bigp">Дорожные плиты от производителя</p><p class="smallp">подробнее</p></a>
+        </div>
+      </div>
+      <div class="ltr">
+        <div class="ltd2 link" style="background-image: url('/templates/obeton/img/image-7.jpg');">
+          <a href="/Page/arenda_spetstehniki/"><p class="bigp">Аренда спецтехники</p><p class="smallp">подробнее</p></a>
+        </div>
+        <div class="ltd2 link" style="background-image: url('/templates/obeton/img/image-8.jpg');">
+          <a href="/Goods/plitka_trotuarnaya/"><p class="bigp">Тротуарная плитка высшего качества от производителя</p><p class="smallp">подробнее</p></a>
+        </div>
+        <div class="ltd link" style="background-image: url('/templates/obeton/img/image-9.jpg');">
+          <a href="/Goods/razdelitelnie_zhelezobetonnie_ograzhdeniya/"><p class="bigp">Парапетные удерживающие и разделительные ограждения «Штарком»</p><p class="smallp">подробнее</p></a>
+        </div>
+      </div>
+    </div>
+    <div class="LogoRight"><img src="/templates/obeton/img/image-10.png" /></div>
+    <div class="LogoRight2">
+        <a href="/Goods/razdelitelnie_zhelezobetonnie_ograzhdeniya/"><img src="/templates/obeton/img/image-10-1.png" /></a>
+    </div>
+    <div class="LogoRight3"><a href="/Goods/beton/"><img src="/templates/obeton/img/image-10-2.png" /></a></div>
+  </div>
+  <div class="LogoBot"><img src="/templates/obeton/img/image-bot.png" /></div>
+</div>
+<div id="Content">
+  <div class="ContentBlock">
+    <div class="ContentBlockHead">
+      <div class="ContentBlockHeadLeft">Продукция</div>
+      <!--<div class="ContentBlockHeadRight">подробнее...</div>-->
+    </div>
+    <div class="ContentBlockMenu">
+      <ul>
+        <li><a href="/Goods/beton/#odincovo">Бетон в Одинцово</a></li>
+        <li><a href="/Goods/beton/#tuchcovo">Бетон в Тучково</a></li>
+        <li><a href="/Goods/beton/">Растворы строительные</a></li>
+        <li><a href="/Goods/shcheben/">Щебень</a></li>
+        <li><a href="/Goods/pesok/">песок</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ContentBlock">
+    <div class="ContentBlockHead">
+      <div class="ContentBlockHeadLeft">Готовые изделия</div>
+      <!--<div class="ContentBlockHeadRight">подробнее...</div>-->
+    </div>
+    <div class="ContentBlockMenu">
+      <ul>
+        <li><a href="/Goods/svai/">Сваи</a></li>
+        <!--<li><a href="/Goods/bloki_stenovie/">Блоки стеновые</a></li>
+        <li><a href="/Goods/bloki_opilkobetonnie/">Блоки опилкобетонные</a></li>-->
+        <li><a href="/Goods/fbs/">Блоки фундаментные (ФБС)</a></li>
+        <li><a href="/Goods/blok_shpalnii/">Блок шпальный</a></li>
+        <!--<li><a href="/Goods/plitka_trotuarnaya/">Плитка тротуарная</a></li>-->
+        <li><a href="/Goods/dorozhnye_plity/">Дорожные плиты</a></li>
+        <li><a href="/Goods/dorozhnye_ograzhdeniya/">Дорожные ограждения</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ContentBlock">
+    <div class="ContentBlockHead">
+      <div class="ContentBlockHeadLeft">Полезная информация</div>
+      <!--<div class="ContentBlockHeadRight">подробнее...</div>-->
+    </div>
+      <!-- Меню новости -->
+      {% if Core.moduleData.ASNews %}
+      {% set inherit = Core.moduleData.ASNews.menu %}
+      {% set systemVars = Core.moduleData.ASNews.systemVars %}
+      {% set i = 0 %}
+    <div class="ContentBlockMenu">
+      <ul>
+        {% for id in Core.moduleData.ASNews.menu %}
+            {% if i < 5 %}
+                <li>
+                    <a href="{{ id.url }}">
+                      <!--<div style="float:left;margin-right: 5px;">
+                        <img src ="/templates/obeton/img/{% if id.type == "новость" %}i_new.png{% elseif id.type == "сообщение" %}i_mess.png{% elseif id.type == "предупреждение" %}i_alert.png{% endif %}" />
+                      </div>-->
+                      {{ id.name }}
+                      <!--<div style="float:right;color: #557cb1;">
+                         {{ id.date|date("d.m.Y") }}
+                      </div>
+                      -->
+                    </a>
+                </li>
+            {% endif %}
+          {% set i = i + 1 %}
+        {% endfor %}
+      </ul>
+    </div>
+      {% endif %}
+      <!-- /Меню новости -->
+  </div>
+</div>
+
+<table id="FooterTop"><tr>
+    <td style="border: 0px; "><a href="/Page/arenda_spetstehniki/"><img src="/templates/obeton/img/beton_mash.jpg" alt="Штарком - технологии бетона" /></a></td>
+    <td style="border: 0px; padding: 0px 5px" class="FooterTopBoxText"><a href="/Page/arenda_spetstehniki/">Аренда Спецтехники</a>
+      <p>Автокран, автобус, бульдозер самосвал, манипулятор, экскаватор-погрузчик,поливомоечная машина</p></td>
+    <td style="border: 0px; "><a href="/Page/perevalka_zhd/"><img src="/templates/obeton/img/wagon.jpg" alt="Штарком - технологии бетона" /></a></td>
+    <td style="border: 0px; padding: 0px 5px" class="FooterTopBoxText"><a href="/Page/perevalka_zhd_nasypnyh_gruzov/">Перевалка ж/д<br> насыпных грузов</a>
+      <p>Предлагаем услуги по ж/д перевалке, отправке и приёмке строительных грузов железнодорожным транспортом.</p></td>
+</tr></table>

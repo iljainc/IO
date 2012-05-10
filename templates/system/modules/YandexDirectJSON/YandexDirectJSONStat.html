@@ -1,0 +1,16 @@
+
+<table align="center"><tr><th colspan="2">Дата</th><th>Ставка</th></tr>
+
+{% for id in Core.moduleData.YandexDirectJSONStat %}
+
+    {% set day = id.ydpl_date|date('d.m.y') %}
+    <tr>
+        <th class="date">
+            {% if oldDay != day %}{{ day }}{% endif %}
+        </th>
+        <th class="date">{{ id.ydpl_date|date('H:i:s') }}</th>
+        <td>{{ id.ydpl_prise }} руб.</td>
+    </tr>
+    {% set oldDay = day %}
+{% endfor %}
+</table>

@@ -1,0 +1,22 @@
+#darkBG {display:none;width: 100%;height: 100%; background: url('/templates/system/js/galery/img/bg.png');position: fixed}
+
+#galery {}
+
+#galery .galeryNavigation {width:715px;height: 52px;}
+#galery .closeImg {position: absolute;top:20px;right:20px;cursor: pointer}
+#galery .numFielf {color:#000;font-size: 1.0em;font-weight: lighter;position: absolute;bottom: 20px;left:20px;white-space: nowrap;}
+#galery .numFielf span {color:#000;font-size: 1.0em;font-weight: lighter;}
+
+#galery .galTop {position: absolute;top:20px;left:20px;white-space: nowrap;}
+#galery .galTop span {color:#000;font-size: 18px;}
+
+#galery .galeryLeft {float: left;width: 90px;height: 548px;}
+#galery .galeryRight {float: left;width: 90px;height: 548px;}
+#galery .galeryCenter {float: left;width: 535px; height: 535px;display: table;text-align: center;}
+#galery .galeryCenter a {display: table-cell;vertical-align: middle;text-align: center;}
+
+#galery .galeryImgDiv {position: fixed;width: 715px;height: 600px;text-align: center;background: #fff;top: 50%;left: 50%; margin-left: -357px;margin-top: -300px;}
+#galery .galeryImg {border:4px solid #fff;margin: 0px auto}
+
+#galery .aimL {cursor: pointer;position: absolute;left: 20px;top: 48%;}
+#galery .aimR {cursor: pointer;position: absolute;right: 20px;top: 48%;}

@@ -1,0 +1,45 @@
+{% if _SESSION.cart %}
+<form method="post">
+<input type="hidden" value="1" name="saveRecount">
+<table align="center" class="cartTab">
+    <tr>
+        <th>№</th>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Колличество</th>
+        <th>Сумма</th>
+    </tr>
+    {% for id in _SESSION.cart|keys %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ _SESSION.cart[id].name }}</td>
+        <td>{{ _SESSION.cart[id].prise }}</td>
+        <td style="text-align:center;"><input name="num{{ id }}" style="text-align:center;width:30px" value="{{ _SESSION.cart[id].num }}"></td>
+        <td>{{ _SESSION.cart[id].num*_SESSION.cart[id].prise }}</td>
+        <td><a href="cart/?del={{ id }}"><img src="images/del.png"></a></td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th colspan="2" style="text-align:right"><input type="submit" value="Пересчитать"></th>
+    </tr>
+</table>
+</form>
+
+<h2>
+Стоимость заказа: 	{{ _SESSION.cartTotal }} руб.<br />
+Всего к оплате: 	{{ _SESSION.cartTotal }} руб.
+
+</h2>
+
+<p>
+<form action="cart/1/">
+    <input type="submit" value="Продолжить оформления заказа">
+</form>
+</p>
+
+{% else %}
+<h2>Ваша корзина пуста</<>
+{% endif %}
