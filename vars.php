@@ -15,6 +15,7 @@ define('__IMAGE_MAGICK', 'class'); // class | system
 
 
 // RELOADDDD
+// hhhhh
 
 /*
 define('__IMAGE_MAGICK_TYPE', 'system');
