@@ -14,6 +14,8 @@ define('__IMAGE_MAGICK_TYPE', 'class'); // class | system
 define('__IMAGE_MAGICK', 'class'); // class | system
 
 
+TEST
+
 /*
 define('__IMAGE_MAGICK_TYPE', 'system');
 define('__IMAGE_MAGICK',    '/usr/bin/');
