@@ -15,7 +15,7 @@ define('__IMAGE_MAGICK', 'class'); // class | system
 
 
 // check for develop branch
-// dev 0.4
+// devvvv 0.4
 
 /*
 define('__IMAGE_MAGICK_TYPE', 'system');
