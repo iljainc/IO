@@ -16,6 +16,9 @@ define('__IMAGE_MAGICK', 'class'); // class | system
 
 // test 669
 // 545454545454
+// 
+// RELOADDDD
+// hhhhh
 
 /*
 define('__IMAGE_MAGICK_TYPE', 'system');
